@@ -24,14 +24,20 @@ body{
 .imagenPortada{
     width: 100%;
     margin-top: -130px;
-    
+}
+
+.logo{
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    width: 250px;
 }
 
 .titulo{
-    margin-top: 1%;
-    margin-bottom: 1%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     font-family: "KiaSignatureFixBold";
-    font-size: x-large;
+    font-size: large;
 }
 
 .inputDatos{
@@ -104,6 +110,15 @@ body{
     .imagenPortada{
         width: 105%;
     }
+
+    
+    .logo{
+        position: absolute;
+        top: 80%;
+        left: 65%;
+        width: 350px;
+    }
+
 
     .cuerpo{
         width: 45%;
