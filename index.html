@@ -285,8 +285,8 @@
                 // }
                 
                 if(valido){
-                    let deseaInfo = checkbox1 == 'on' ? 1:0
-                    let aceptoPoliticas = checkbox2 == 'on' ? 1:0
+                    let deseaInfo = checkbox1 == true ? 1:0
+                    let aceptoPoliticas = checkbox2 == true ? 1:0
                     let resul = await guardaDatos( nombre ,apellido ,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
                     if (resul.statusCode ==200){
                         window.location.href = `resultado.html?nombre=${nombre + ' ' + apellido}&id=${resul.message}`;
