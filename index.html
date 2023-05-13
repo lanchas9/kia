@@ -41,7 +41,7 @@
     </div>
 
     <script type="text/javascript">
-
+        let serverLibre = true;
         let tipoValidaciones = { 
             existeValor: "existeValor",
             esNumero: "esNumero",
@@ -212,87 +212,92 @@
         }
 
         async function validaDatos() {
-            document.getElementById("mensajeError").innerHTML = ""
-            let nombre = new String(document.getElementById("Nombre").value);
-            let apellido = new String(document.getElementById("ApellidoPaterno").value);
-            let telefono = new String(document.getElementById("Telefono").value);
-            let codigoPostal = new String(document.getElementById("CodigoPostal").value);
-            let seleccioneEstado = document.getElementById("SeleccioneEstado").value;
-            let seleccioneDistribuidor = document.getElementById("SeleccioneDistribuidor").value;
-
+            if(serverLibre){
+                serverLibre = false
             
-            let checkbox1 = document.getElementById("checkbox1").value;
-            let checkbox2 = document.getElementById("checkbox2").value;
-            
-            
-            let valido = true
-            let mensaje = ""
+                document.getElementById("mensajeError").innerHTML = ""
+                let nombre = new String(document.getElementById("Nombre").value);
+                let apellido = new String(document.getElementById("ApellidoPaterno").value);
+                let telefono = new String(document.getElementById("Telefono").value);
+                let codigoPostal = new String(document.getElementById("CodigoPostal").value);
+                let seleccioneEstado = document.getElementById("SeleccioneEstado").value;
+                let seleccioneDistribuidor = document.getElementById("SeleccioneDistribuidor").value;
 
-            if (checkbox1!= 'on') {
-                valido = false
-                mensaje = "No se ha aceptado la politica de privacidad"
-            }
+                
+                let checkbox1 = document.getElementById("checkbox1").checked;
+                let checkbox2 = document.getElementById("checkbox2").checked;
+                
+                
+                let valido = true
+                let mensaje = ""
 
-            if (seleccioneDistribuidor== '') {
-                valido = false
-                mensaje = "Seleccione el distribuidor"
-            }
-
-            if (seleccioneEstado== '') {
-                valido = false
-                mensaje = "Seleccione su Estado de la República"
-            }
-
-            if(isNumeric(codigoPostal)){
-                valido = false
-                mensaje = "Código postal debe de ser de 5 dígitos"
-            }
-
-            if (codigoPostal.length!= 5) {
-                valido = false
-                mensaje = "Código postal debe de ser de 5 dígitos"
-            }
-            
-            telefono = telefono.trim()
-            if(celularInValido(telefono)){
-                valido = false
-                mensaje = "Telefono no es de 10 dígitos"
-            }
-
-            if (apellido.length<= 2) {
-                valido = false
-                mensaje = "Apellido demasiado corto"
-            }
-
-            if (nombre.length<= 2) {
-                valido = false
-                mensaje = "Nombre demasiado corto"
-            }
-
-
-            // correoUsuario = correoUsuario.trim()
-            // if(mailInValido(correoUsuario)){
-            //     valido = false
-            //     mensaje = "correo invalido"
-            // }
-
-            // if (nombreUsuario.length<= 5) {
-            //     valido = false
-            //     mensaje = "Nombre demasiado corto"
-            // }
-            
-            if(valido){
-                let deseaInfo = checkbox1 == 'on' ? 1:0
-                let aceptoPoliticas = checkbox2 == 'on' ? 1:0
-                let resul = await guardaDatos( nombre ,apellido ,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
-                if (resul.statusCode ==200){
-                    
-                    window.location.href = `resultado.html`;
-                }else{
-                    document.getElementById("mensajeError").innerHTML = resul.message
+                if (!checkbox2) {
+                    valido = false
+                    mensaje = "No se ha aceptado la politica de privacidad"
                 }
-            }else{
-                document.getElementById("mensajeError").innerHTML = mensaje
+
+                if (seleccioneDistribuidor== '') {
+                    valido = false
+                    mensaje = "Seleccione el distribuidor"
+                }
+
+                if (seleccioneEstado== '') {
+                    valido = false
+                    mensaje = "Seleccione su Estado de la República"
+                }
+
+                if(isNumeric(codigoPostal)){
+                    valido = false
+                    mensaje = "Código postal debe de ser de 5 dígitos"
+                }
+
+                if (codigoPostal.length!= 5) {
+                    valido = false
+                    mensaje = "Código postal debe de ser de 5 dígitos"
+                }
+                
+                telefono = telefono.trim()
+                if(celularInValido(telefono)){
+                    valido = false
+                    mensaje = "Telefono no es de 10 dígitos"
+                }
+
+                if (apellido.length<= 2) {
+                    valido = false
+                    mensaje = "Apellido demasiado corto"
+                }
+
+                if (nombre.length<= 2) {
+                    valido = false
+                    mensaje = "Nombre demasiado corto"
+                }
+
+
+                // correoUsuario = correoUsuario.trim()
+                // if(mailInValido(correoUsuario)){
+                //     valido = false
+                //     mensaje = "correo invalido"
+                // }
+
+                // if (nombreUsuario.length<= 5) {
+                //     valido = false
+                //     mensaje = "Nombre demasiado corto"
+                // }
+                
+                if(valido){
+                    let deseaInfo = checkbox1 == 'on' ? 1:0
+                    let aceptoPoliticas = checkbox2 == 'on' ? 1:0
+                    let resul = await guardaDatos( nombre ,apellido ,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
+                    if (resul.statusCode ==200){
+                        window.location.href = `resultado.html?nombre=${nombre + ' ' + apellido}&id=${resul.message}`;
+                    }else{
+                        document.getElementById("mensajeError").innerHTML = resul.message
+                        serverLibre=true
+                    }
+                }else{
+                    document.getElementById("mensajeError").innerHTML = mensaje
+                    serverLibre=true
+                }
             }
         }
         
@@ -309,7 +314,9 @@
                     "telefono" : telefono,
                     "codigoPostal" : codigoPostal,
                     "seleccioneEstado" : seleccioneEstado,
-                    "seleccioneDistribuidor" : seleccioneDistribuidor
+                    "seleccioneDistribuidor" : seleccioneDistribuidor,
+                    "deseaInfo" : deseaInfo, 
+                    "aceptoPoliticas": aceptoPoliticas
                 }
                 const dataJson = JSON.stringify(data)
 
@@ -329,7 +336,7 @@
                     
                     if(data.statusCode == 200){
                         resul.statusCode = data.statusCode
-                        resul.idUsuario = data.message[0].idUsuario
+                        resul.idUsuario = data.message
                         resul.message = data.message
                     }else{                        
                         resul.statusCode = data.statusCode
