@@ -23,7 +23,7 @@ body{
 
     .imagenPortada{
         width: 100%;
-        margin-top: -130px;
+        margin-top: -100px;
     }
 
     .logo{
@@ -132,7 +132,7 @@ body{
 
 @media screen and (min-width: 901px) {
     .imagenPortada{
-        width: 105%;
+        width: 120%;
     }
 
     
