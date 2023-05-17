@@ -13,8 +13,10 @@
 </head>
 <body onload="cargaDatos()">
     
-    <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo">
-    <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
+    <div class="banner">
+        <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo" id="imagenLogo">
+        <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenBack" class="imagenPortada">
+    </div>
     <div class="cuerpo">
         <div class="titulo">Llena esta forma por favor</div>
         <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*">
@@ -186,6 +188,15 @@
             ["Zacatecas","KIA FRESNILLO"]	
         ]
         async function cargaDatos(){
+            // let back = document.getElementById("imagenBack")
+            // let logo = document.getElementById("imagenLogo")
+
+            // let backCoor = back.getBoundingClientRect();
+            // let logoCoor = logo.getBoundingClientRect();
+
+            // logo.style.top = backCoor.bottom - (logoCoor.bottom - logoCoor.top ) - 100  
+
+
             let menu = document.getElementById("SeleccioneEstado")
             
             estados.forEach(element => {
