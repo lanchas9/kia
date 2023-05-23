@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/styleHD.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src="js/jquery.min.js"  type='text/javascript'></script>
+    <script src="js/qrcode.js"  type='text/javascript'></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.8/pixi.min.js"></script>
+</head>
+<body onload="cargaDatos()">
+    
+    <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo">
+    <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
+    <div class="cuerpo">
+        <div class="titulo2">Juega a la ruleta con KIA <br><span id="nombre" class="nombre"></span></div>
+        <div class="titulo">Presenta tu código QR <br> con el que podrás participar por un premio en nuestra ruleta</div>
+        <br>
+        <div class="centrado">
+            <canvas id="myCanvas"></canvas>    
+        </div>
+        <br>
+        <button class="boton" onclick="regresa()">Reiniciar</button>
+    </div>
+
+    <script type="text/javascript">
+        async function regresa(){
+            window.location.href = `ruleta.html`;
+        }
+
+        const canvas = document.getElementById('myCanvas');
+        const app = new PIXI.Application({
+            view: canvas,
+            width: 850,
+            height: 850,
+            backgroundColor : 0xFFFFFF
+        });
+
+        let girando = false;
+
+        app.loader.add('boton', 'https://static.vecteezy.com/system/resources/previews/017/177/734/original/green-start-button-on-transparent-background-free-png.png')
+        // Load the bunny texture
+        app.loader.add('arrow', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Red_Arrow_Down.svg/1200px-Red_Arrow_Down.svg.png')
+
+        // Load the bunny texture
+        app.loader.add('ruleta', 'https://4.bp.blogspot.com/-W5A2KR6FTRk/Vywz0UZ23pI/AAAAAAAAYFw/F-9k-HXpGrwt8tRiFe5VJVEO8VXcg_rAACLcB/s1600/spain_s_la_ruleta_de_la_suerte_layout_2013_by_designerboy7-d79dvjw.png')
+        .load(startup);
+
+    function startup()
+    {
+        var boton = new PIXI.Sprite(app.loader.resources.boton.texture);
+        boton.anchor.set(0.5);
+        boton.height = app.renderer.height/2;
+        boton.width = boton.height;
+
+        boton.x = app.renderer.width / 2;
+        boton.y = app.renderer.height / 9;
+        
+        var arrow = new PIXI.Sprite(app.loader.resources.arrow.texture);
+        arrow.anchor.set(0.5);
+
+        arrow.width = app.renderer.width/10;
+        arrow.height = app.renderer.height/10;
+        arrow.x = app.renderer.width / 2;
+        
+        var ruleta = new PIXI.Sprite(app.loader.resources.ruleta.texture);
+
+        // Center the sprite's anchor point
+        ruleta.anchor.set(0.5);
+
+        // Move the sprite to the center of the screen
+        ruleta.height = app.renderer.height * .7;
+        ruleta.width = ruleta.height;
+        
+        ruleta.x = app.renderer.width / 2;
+        ruleta.y = app.renderer.height * .65;
+
+        arrow.y = ruleta.y - ruleta.height/2;
+
+        app.stage.addChild(ruleta);
+        app.stage.addChild(arrow);
+        app.stage.addChild(boton);
+
+                // Listen for animate update
+        app.ticker.add(function(delta)
+        {
+            if(girando){
+                ruleta.rotation += 0.1 * delta;
+            }
+        });
+
+        boton.on('click', gira);
+        boton.on('tap',  gira);
+        boton.interactive = true;
+        boton.buttonMode = true;
+
+    }
+
+    function gira(){
+        if(girando){
+            girando = false;
+        }else{
+            girando = true
+        }
+    }
+
+        
+    </script>
+</body>
+</html>

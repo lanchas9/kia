@@ -18,8 +18,8 @@
     <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo">
     <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
     <div class="cuerpo">
-        <div class="titulo2">Gracias por registrarte con nosotros <br><span id="nombre" class="nombre"></span></div>
-        <div class="titulo">A continuación presentamos tu código QR <br> con el que podrás participar por un premio en nuestra ruleta</div>
+        <div class="titulo">Gracias por registrarte con nosotros <br><span id="nombre" class="nombre"></span></div>
+        <div class="titulo">A continuación presentamos tu código QR con el que podrás participar por un premio en nuestra ruleta</div>
         <br>
         <div class="centrado">
             <div id="qrcode1"  class="qr"></div>
@@ -39,12 +39,13 @@
             let nombre = urlParams.get('nombre');
             let id = urlParams.get('id');
             document.getElementById("nombre").innerHTML = nombre
-
-            let urlImagenQR = `${nombre}:::KIA:::ID:::${id}`
+            let idFinal = ('000000'+id).slice(-6);
+            let urlImagenQR = `;${nombre}:::KIA:::ID:::${idFinal}`
             // let imagen = document.getElementById("qr")
             // imagen.src = urlImagenQR
             try{
                 new QRCode(document.getElementById('qrcode1'), urlImagenQR);
+                document.getElementById("qrcode1").className = "qr"
             }catch(err){
                 console.log(err)
             }

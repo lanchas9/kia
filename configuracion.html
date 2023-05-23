@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link rel="stylesheet" href="css/styleHD.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script src="js/cookie.js"></script>
+</head>
+<body onload="cargaDatos()">
+    
+    <div class="banner">
+        <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo" id="imagenLogo">
+        <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenBack" class="imagenPortada">
+    </div>
+    <div class="margen">
+        <div class="cuerpo">
+            <div class="titulo">Numero de premios totales a entregar hoy:<br> <input type="number" class="inputDatos" id="numPremios" placeholder="numPremios"></div>
+            <div class="titulo">Duracion en minutos de la activación: <br><input type="number" class="inputDatos" id="numHorasServicio" placeholder="numHorasServicio"></div>
+            <div class="titulo">Horario de arranque: <br><input type="time" class="inputDatos" id="horaArranque" placeholder=""></div>
+            <div class="titulo">Numero de carriles habilitados: <br><input type="number" class="inputDatos" id="numCarriles" placeholder="numCarriles"></div>
+            <div id="carriles">
+            </div>
+            <div id="mensajeError" class="mensajeError"></div>
+            <button class="boton" onclick="validaDatos()">Guardar Configuracion</button>
+        </div>
+    </div>
+    <script type="text/javascript">
+        let serverLibre = true;
+
+        function seleccionaNumeroCarriles(){
+            let numCarriles = parseInt(document.getElementById("numCarriles").value)
+            let validado = false
+            validado = isNumeric(numCarriles) ? true : false
+            validado = numCarriles > 0 ? true : false 
+
+            if(validado){
+                
+                let carriles = document.getElementById("carriles")
+                carriles.innerHTML = ''
+                for (let index = 1; index <= numCarriles; index++) {
+                    carriles.innerHTML = carriles.innerHTML + `<div class="titulo">Carril ${index}: <br> <input type="number" class="inputDatos" id="capacidadCarril${index}" placeholder="capacidadCarril${index}"></div>` 
+                }
+                for (let index = 1; index <= numCarriles; index++) {
+                    document.getElementById(`capacidadCarril${index}`).value = parseInt(getCookie(`capacidadCarril${index}`));
+                }       
+            }
+        }
+
+        async function cargaDatos(){
+            let numCarrilesInput = document.getElementById("numCarriles")
+            numCarrilesInput.addEventListener('input', () => {
+                seleccionaNumeroCarriles();    
+            });
+
+            document.getElementById("numCarriles").value = getCookie("numCarriles");
+            seleccionaNumeroCarriles();
+            document.getElementById("horaArranque").value = getCookie("horaArranque");
+            document.getElementById("numHorasServicio").value = getCookie("numHorasServicio");
+            document.getElementById("numPremios").value = getCookie("numPremios");             
+        }
+
+
+        async function validaDatos() {
+            if(serverLibre){
+                serverLibre = false
+            
+                document.getElementById("mensajeError").innerHTML = ""
+                let numPremios = parseInt(document.getElementById("numPremios").value);
+                let numHorasServicio = parseInt(document.getElementById("numHorasServicio").value);
+                let horaArranque = document.getElementById("horaArranque").value;
+                let numCarriles = parseInt(document.getElementById("numCarriles").value);
+                
+                let arrayCarriles = [-1,-1,-1,-1,-1,-1]
+                let validado = false
+                validado = isNumeric(numCarriles) ? true : false
+                validado = numCarriles > 0 ? true : false 
+                let validadoCarriles = false
+                
+                if(validado){
+                    
+                    for (let index = 1; index <= numCarriles; index++) {
+                        let capacidadCarril = parseInt(document.getElementById("capacidadCarril"+ index).value)
+                        validadoCarriles = isNumeric(capacidadCarril) ? true : false
+                        validadoCarriles = capacidadCarril >= 0 ? true : false 
+                        if(validadoCarriles){
+                            arrayCarriles[index-1] = capacidadCarril
+                        }
+                    }
+                }       
+
+                let valido = true
+                let mensaje = ""
+
+                if (!validadoCarriles) {
+                    valido = false
+                    mensaje = "Inventario ingresado en carriles es incorrecto"
+                }
+
+                if (!validado) {
+                    valido = false
+                    mensaje = "Número de carriles es incorrecto"
+                }
+
+                if (horaArranque== '') {
+                    valido = false
+                    mensaje = "Hora de arranque es incorrecta"
+                }
+
+                if(!isNumeric(""+numHorasServicio)){
+                    valido = false
+                    mensaje = "Número de Horas de servicio es incorrecto"
+                }
+
+                if (numHorasServicio <= 0) {
+                    valido = false
+                    mensaje = "Número de Horas de servicio es incorrecto"
+                }
+                
+                if(!isNumeric(""+numPremios)){
+                    valido = false
+                    mensaje = "Número de premios es incorrecto"
+                }
+
+                if (numPremios <= 0) {
+                    valido = false
+                    mensaje = "Número de premios es incorrecto"
+                }
+
+                if(valido){
+                    //Guardamos en Cookies y salimos
+                    setCookie("capacidadCarril1", arrayCarriles[0], 10);
+                    setCookie("capacidadCarril2", arrayCarriles[1], 10);
+                    setCookie("capacidadCarril3", arrayCarriles[2], 10);
+                    setCookie("capacidadCarril4", arrayCarriles[3], 10);
+                    setCookie("capacidadCarril5", arrayCarriles[4], 10);
+                    setCookie("capacidadCarril6", arrayCarriles[5], 10);
+                    setCookie("numCarriles", numCarriles, 10);
+                    //tenemos que comprar si son iguales los valores para saber si necesitamos recalcular premios x hora
+                    let hayCambios = false
+                    if(getCookie("horaArranque") != horaArranque){
+                        hayCambios = true
+                    }
+                    if(getCookie("numHorasServicio") != numHorasServicio){
+                        hayCambios = true
+                    }
+                    if(getCookie("numPremios") != numPremios){
+                        hayCambios = true
+                    }
+
+                    if(hayCambios){
+                        //recalculamos premios
+                        let arrayGanadoresRandom = []
+                        let periodo = numHorasServicio / numPremios
+                        let preriodoSegundos = periodo * 60
+                        
+                        for (let index = 0; index < numPremios; index++) {
+                            arraySegundosGanadores.push(Math.floor(Math.random() * (preriodoSegundos)))
+                        }
+                        let arrayGanadores = Array(numPremios).fill(0)
+                        setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                        setCookie("arrayGanadoresRandom", arrayGanadoresRandom.toString(), 10)
+                        setCookie("horaArranque", horaArranque, 10);
+                        setCookie("numHorasServicio", numHorasServicio, 10);
+                        setCookie("numPremios", numPremios, 10);
+                    }else{
+                        setCookie("horaArranque", horaArranque, 10);
+                        setCookie("numHorasServicio", numHorasServicio, 10);
+                        setCookie("numPremios", numPremios, 10);
+                    }
+                    window.location.href = `ruleta.html`;
+                }else{
+                    document.getElementById("mensajeError").innerHTML = mensaje
+                }
+                serverLibre = true
+            }
+        }
+
+        function mailInValido(correoUsuario) {
+            let esInValido = true
+
+           if  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(correoUsuario)) {
+                esInValido = false
+             } 
+            return esInValido
+        }
+        
+        function celularInValido(celularUsuario) {
+            let esInValido = true            
+            if( isNumeric(celularUsuario) && celularUsuario.length == 10 ){
+                esInValido = false
+            }
+            return esInValido
+        }
+
+        function isNumeric(str) {
+            if (typeof str != "string") return false // we only process strings!  
+            return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                    !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+        }
+    </script>
+</body>
+</html>

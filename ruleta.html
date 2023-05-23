@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>LOTTIE</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.11.0/lottie.js"></script>
     <link rel="stylesheet" href="css/styleHD.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -12,10 +13,14 @@
     <link rel="manifest" href="/site.webmanifest">
     <script src="js/jquery.min.js"  type='text/javascript'></script>
     <script src="js/qrcode.js"  type='text/javascript'></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.8.8/pixi.min.js"></script>
+    <script src="js/pixi.js"></script>
+    <script src="js/cookie.js"type="text/javascript"></script>    
 </head>
 <body onload="cargaDatos()">
-    
+    <div id="element1" class="element noVisible" onclick="gira()">
+    </div>
+    <div id="element2" class="element noVisible" onclick="gira()">
+    </div>  
     <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo">
     <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
     <div class="cuerpo">
@@ -23,13 +28,69 @@
         <div class="titulo">Presenta tu código QR <br> con el que podrás participar por un premio en nuestra ruleta</div>
         <br>
         <div class="centrado">
-            <canvas id="myCanvas"></canvas>    
+            <canvas id="myCanvas" class=""></canvas>    
         </div>
         <br>
         <button class="boton" onclick="regresa()">Reiniciar</button>
-    </div>
-
+    </div>    
+    
+    <!-- <div id="elem" class="element"></div>-->
     <script type="text/javascript">
+        var lottie1
+        var lottie2
+        let numPremios = 100
+        let numHorasServicio = 100
+        let horaArranque = '00:00'
+        let numCarriles = 6
+        let arrayCarriles = [-1,-1,-1,-1,-1,-1]
+        let arrayGanadores = []
+
+        function cargaDatos(){
+            element = document.getElementById("element")
+            lottie1 = lottie.loadAnimation({
+            container: element1, // the dom element that will contain the animation
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: 'http://localhost:5501//lottie/1663-balloons.json' // the path to the animation json
+            });
+            
+            lottie2 = lottie.loadAnimation({
+            container: element2, // the dom element that will contain the animation
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: 'http://localhost:5501//lottie/92235-confetti.json' // the path to the animation json
+            });
+            //Leer desde Cookie los valores persistentes
+
+            numPremios = parseInt(getCookie("numPremios"))
+            numHorasServicio = parseInt(getCookie("numHorasServicio"))
+            horaArranque = getCookie("horaArranque")
+            numCarriles = parseInt(getCookie("numCarriles"))
+            arrayCarriles[0] = parseInt(getCookie("capacidadCarril1"))
+            arrayCarriles[1] = parseInt(getCookie("capacidadCarril2"))
+            arrayCarriles[2] = parseInt(getCookie("capacidadCarril3"))
+            arrayCarriles[3] = parseInt(getCookie("capacidadCarril4"))
+            arrayCarriles[4] = parseInt(getCookie("capacidadCarril5"))
+            arrayCarriles[5] = parseInt(getCookie("capacidadCarril6"))
+            arrayGanadores = getCookie("arrayGanadores").split(',');
+        }
+
+        function iniciaAnimacion(){
+            document.getElementById("element1").className = "element siVisible"
+            document.getElementById("element2").className = "element siVisible"
+            lottie1.play()
+            lottie2.play()
+        }
+
+        function detenAnimacion(){
+            document.getElementById("element1").className = "element noVisible"
+            document.getElementById("element2").className = "element noVisible"
+            lottie1.stop()
+            lottie2.stop()
+        }
+
         async function regresa(){
             window.location.href = `ruleta.html`;
         }
@@ -105,12 +166,92 @@
     function gira(){
         if(girando){
             girando = false;
+            detenAnimacion()
         }else{
             girando = true
+            iniciaAnimacion()
         }
     }
+    let strInput = ""
+    let index = 0
+    let idInvitado 
+    
+    async function creaEventosTeclado(){
+            addEvent(document, "keypress", function (e) {
+                e = e || window.event;
+                console.log("**Leemos teclado**")
+                console.log({strInput})
+                console.log({index})
+                key = e.key
+                console.log({key})
+                keyCode = e.keyCode
+                console.log({keyCode})
+                // strInput += e.key
+                // index +=1
+                largoCodigoQR = 99
+                if (e.keyCode == 13) {
+                    largoCodigoQR = strInput.length
+                }
+                if (e.keyCode == 188) {
+                    strInput=""
+                    index = 0
+                }
+                excedeLargoCodigoQR = largoCodigoQR + 1
+                if(index < largoCodigoQR){
+                    // if(e.keyCode == 34){
+                    //     console.log("alto")
+                    //     strInput += "@"
+                    // }else if(e.keyCode == 39){
+                    //     console.log("alto")
+                    //     strInput += "-"
+                    // }else if(e.keyCode == 63){
+                    //     console.log("alto")
+                    //     strInput += "_"
+                    // }else{
+                           strInput += e.key
+                    // }
+                    
+                    index +=1
+                }else if(index == largoCodigoQR){
+                    console.log("**Entramos con: **")
+                    temp  = strInput;
+                    idInvitado = temp
+                    console.log({idInvitado})
+                    tenemosQR(idInvitado)
+                    index = 0
+                    strInput = ""
+                }else if(index > largoCodigoQR){
+                    index = 0
+                    strInput = ""
+                }
+            });
 
+            document.addEventListener('paste', (event) => {
+                largoCodigoQR = 6
+                event.preventDefault();
+                nuevo = (event.clipboardData.getData('text/plain'));
+                paste = nuevo;
+                index = paste.length
+                if(index == largoCodigoQR){
+                    index = 0
+                    strInput = ''
+                    idInvitado = paste
+                    tenemosQR(idInvitado)
+                }
+            });
+   
+        }
+        
+        // let numPremios = 100
+        // let numHorasServicio = 100
+        // let horaArranque = new Date()
+        // let numCarriles = 6
+        // let numPremiosXcarril = 6
+
+        async function tenemosQR(idInvitado){
+            //Aqui verficiamos el segundo que es desde la hora de inciio y validamos en array
+        }
         
     </script>
 </body>
-</html>
+</html> 

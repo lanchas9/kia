@@ -14,11 +14,14 @@
 <body onload="cargaDatos()">
     
     <div class="banner">
-        <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo" id="imagenLogo">
         <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenBack" class="imagenPortada">
+        <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo" id="imagenLogo">
     </div>
     <div class="cuerpo">
-        <div class="titulo">Llena esta forma por favor</div>
+        <div class="centrado">
+            <div class="titulo">Llena esta forma por favor</div>
+        </div>
+        
         <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*">
         <input type="text" class="inputDatos" id="ApellidoPaterno" placeholder="Apellido Paterno*">
         <input type="number" class="inputDatos" id="Telefono" placeholder="Teléfono*">
@@ -385,6 +388,6 @@
             return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
                     !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
         }
-    </script>
+    </script> 
 </body>
 </html>
