@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOTTIE</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.11.0/lottie.js"></script>
+    <script src="js/lottie.js"></script>
     <link rel="stylesheet" href="css/styleHD.css">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -52,7 +52,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: 'http://localhost:5501//lottie/1663-balloons.json' // the path to the animation json
+            path: '/lottie/1663-balloons.json' // the path to the animation json
             });
             
             lottie2 = lottie.loadAnimation({
@@ -60,7 +60,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: 'http://localhost:5501//lottie/92235-confetti.json' // the path to the animation json
+            path: '/lottie/92235-confetti.json' // the path to the animation json
             });
             //Leer desde Cookie los valores persistentes
 
@@ -105,12 +105,12 @@
 
         let girando = false;
 
-        app.loader.add('boton', 'https://static.vecteezy.com/system/resources/previews/017/177/734/original/green-start-button-on-transparent-background-free-png.png')
+        app.loader.add('boton', '/jpg/boton.webp')
         // Load the bunny texture
-        app.loader.add('arrow', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Red_Arrow_Down.svg/1200px-Red_Arrow_Down.svg.png')
+        app.loader.add('arrow', '/jpg/arrow.png')
 
         // Load the bunny texture
-        app.loader.add('ruleta', 'https://4.bp.blogspot.com/-W5A2KR6FTRk/Vywz0UZ23pI/AAAAAAAAYFw/F-9k-HXpGrwt8tRiFe5VJVEO8VXcg_rAACLcB/s1600/spain_s_la_ruleta_de_la_suerte_layout_2013_by_designerboy7-d79dvjw.png')
+        app.loader.add('ruleta', '/jpg/ruleta.png')
         .load(startup);
 
     function startup()
