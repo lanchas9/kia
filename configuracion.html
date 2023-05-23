@@ -133,13 +133,22 @@
                 }
 
                 if(valido){
-                    //Guardamos en Cookies y salimos
+                    //Guardamos en Cookies de valores actuales - SE MODIFICAN
                     setCookie("capacidadCarril1", arrayCarriles[0], 10);
                     setCookie("capacidadCarril2", arrayCarriles[1], 10);
                     setCookie("capacidadCarril3", arrayCarriles[2], 10);
                     setCookie("capacidadCarril4", arrayCarriles[3], 10);
                     setCookie("capacidadCarril5", arrayCarriles[4], 10);
                     setCookie("capacidadCarril6", arrayCarriles[5], 10);
+                    
+                    //Guardamos en Cookies de valores actuales - DEFAULT NO SE MODIFICAN
+                    setCookie("capacidadMaximaCarril1", arrayCarriles[0], 10);
+                    setCookie("capacidadMaximaCarril2", arrayCarriles[1], 10);
+                    setCookie("capacidadMaximaCarril3", arrayCarriles[2], 10);
+                    setCookie("capacidadMaximaCarril4", arrayCarriles[3], 10);
+                    setCookie("capacidadMaximaCarril5", arrayCarriles[4], 10);
+                    setCookie("capacidadMaximaCarril6", arrayCarriles[5], 10);
+
                     setCookie("numCarriles", numCarriles, 10);
                     //tenemos que comprar si son iguales los valores para saber si necesitamos recalcular premios x hora
                     let hayCambios = false
@@ -160,7 +169,7 @@
                         let preriodoSegundos = periodo * 60
                         
                         for (let index = 0; index < numPremios; index++) {
-                            arraySegundosGanadores.push(Math.floor(Math.random() * (preriodoSegundos)))
+                            arrayGanadoresRandom.push(Math.floor(Math.random() * (preriodoSegundos)))
                         }
                         let arrayGanadores = Array(numPremios).fill(0)
                         setCookie("arrayGanadores", arrayGanadores.toString(), 10)

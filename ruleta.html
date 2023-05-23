@@ -20,9 +20,13 @@
     <div id="element1" class="element noVisible" onclick="gira()">
     </div>
     <div id="element2" class="element noVisible" onclick="gira()">
+    </div>
+    <div id="element3" class="element noVisible" onclick="gira()">
+    </div>
+    <div id="element4" class="element noVisible" onclick="gira()">
     </div>  
-    <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo">
-    <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
+    <!-- <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo"> -->
+    <img src="jpg/imagen_fondo_kia_LOW.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
     <div class="cuerpo">
         <div class="titulo2">Juega a la ruleta con KIA <br><span id="nombre" class="nombre"></span></div>
         <div class="titulo">Presenta tu código QR <br> con el que podrás participar por un premio en nuestra ruleta</div>
@@ -30,7 +34,7 @@
         <div class="centrado">
             <canvas id="myCanvas" class=""></canvas>    
         </div>
-        <br>
+        <br><br><br><br><br><br><br><br><br><br><br>
         <button class="boton" onclick="regresa()">Reiniciar</button>
     </div>    
     
@@ -38,12 +42,15 @@
     <script type="text/javascript">
         var lottie1
         var lottie2
+        var lottie3
+        var lottie4
         let numPremios = 100
         let numHorasServicio = 100
         let horaArranque = '00:00'
         let numCarriles = 6
         let arrayCarriles = [-1,-1,-1,-1,-1,-1]
         let arrayGanadores = []
+        let arrayGanadoresRandom = []
 
         function cargaDatos(){
             element = document.getElementById("element")
@@ -62,6 +69,23 @@
             autoplay: false,
             path: '/lottie/92235-confetti.json' // the path to the animation json
             });
+
+            lottie3 = lottie.loadAnimation({
+            container: element3, // the dom element that will contain the animation
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: '/lottie/134509-purple-countdown.json' // the path to the animation json
+            });
+
+            lottie4 = lottie.loadAnimation({
+            container: element4, // the dom element that will contain the animation
+            renderer: 'svg',
+            loop: true,
+            autoplay: false,
+            path: '/lottie/91878-bouncy-fail.json' // the path to the animation json
+            });
+
             //Leer desde Cookie los valores persistentes
 
             numPremios = parseInt(getCookie("numPremios"))
@@ -75,6 +99,9 @@
             arrayCarriles[4] = parseInt(getCookie("capacidadCarril5"))
             arrayCarriles[5] = parseInt(getCookie("capacidadCarril6"))
             arrayGanadores = getCookie("arrayGanadores").split(',');
+            arrayGanadoresRandom = getCookie("arrayGanadoresRandom").split(',');
+                        
+            creaEventosTeclado()
         }
 
         function iniciaAnimacion(){
@@ -91,6 +118,16 @@
             lottie2.stop()
         }
 
+        function iniciaAnimacionFail(){
+            document.getElementById("element4").className = "element siVisible"
+            lottie4.play()
+        }
+
+        function detenAnimacionFail(){
+            document.getElementById("element4").className = "element noVisible"
+            lottie4.stop()
+        }
+
         async function regresa(){
             window.location.href = `ruleta.html`;
         }
@@ -105,7 +142,7 @@
 
         let girando = false;
 
-        app.loader.add('boton', '/jpg/boton.webp')
+        // app.loader.add('boton', '/jpg/boton.webp')
         // Load the bunny texture
         app.loader.add('arrow', '/jpg/arrow.png')
 
@@ -115,13 +152,13 @@
 
     function startup()
     {
-        var boton = new PIXI.Sprite(app.loader.resources.boton.texture);
-        boton.anchor.set(0.5);
-        boton.height = app.renderer.height/2;
-        boton.width = boton.height;
+        // var boton = new PIXI.Sprite(app.loader.resources.boton.texture);
+        // boton.anchor.set(0.5);
+        // boton.height = app.renderer.height/2;
+        // boton.width = boton.height;
 
-        boton.x = app.renderer.width / 2;
-        boton.y = app.renderer.height / 9;
+        // boton.x = app.renderer.width / 2;
+        // boton.y = app.renderer.height / 9;
         
         var arrow = new PIXI.Sprite(app.loader.resources.arrow.texture);
         arrow.anchor.set(0.5);
@@ -146,7 +183,7 @@
 
         app.stage.addChild(ruleta);
         app.stage.addChild(arrow);
-        app.stage.addChild(boton);
+        // app.stage.addChild(boton);
 
                 // Listen for animate update
         app.ticker.add(function(delta)
@@ -156,25 +193,35 @@
             }
         });
 
-        boton.on('click', gira);
-        boton.on('tap',  gira);
-        boton.interactive = true;
-        boton.buttonMode = true;
+        // boton.on('click', gira);
+        // boton.on('tap',  gira);
+        // boton.interactive = true;
+        // boton.buttonMode = true;
 
     }
 
     function gira(){
         if(girando){
             girando = false;
-            detenAnimacion()
+            //detenAnimacion()
         }else{
             girando = true
-            iniciaAnimacion()
+            //iniciaAnimacion()
         }
     }
     let strInput = ""
     let index = 0
     let idInvitado 
+
+    function addEvent(element, eventName, callback) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, callback, false);
+            } else if (element.attachEvent) {
+                element.attachEvent("on" + eventName, callback);
+            } else {
+                element["on" + eventName] = callback;
+            }
+        }
     
     async function creaEventosTeclado(){
             addEvent(document, "keypress", function (e) {
@@ -188,7 +235,7 @@
                 console.log({keyCode})
                 // strInput += e.key
                 // index +=1
-                largoCodigoQR = 99
+                largoCodigoQR = 29
                 if (e.keyCode == 13) {
                     largoCodigoQR = strInput.length
                 }
@@ -227,7 +274,7 @@
             });
 
             document.addEventListener('paste', (event) => {
-                largoCodigoQR = 6
+                largoCodigoQR = 29 + 1
                 event.preventDefault();
                 nuevo = (event.clipboardData.getData('text/plain'));
                 paste = nuevo;
@@ -250,8 +297,112 @@
 
         async function tenemosQR(idInvitado){
             //Aqui verficiamos el segundo que es desde la hora de inciio y validamos en array
+            console.log({idInvitado})
+
+            //Vamos a ver si es intruccion de llenado de vending
+            if(idInvitado.charAt(0) == ":"){
+                let instruccion = idInvitado.slice(":")[1]
+                if(instruccion == "llenado"){
+
+                    arrayCarriles[0] = getCookie("capacidadMaximaCarril1")
+                    arrayCarriles[1] = getCookie("capacidadMaximaCarril2")
+                    arrayCarriles[2] = getCookie("capacidadMaximaCarril3")
+                    arrayCarriles[3] = getCookie("capacidadMaximaCarril4")
+                    arrayCarriles[4] = getCookie("capacidadMaximaCarril5")
+                    arrayCarriles[5] = getCookie("capacidadMaximaCarril6")
+
+                    setCookie("capacidadCarril1", arrayCarriles[0], 10);
+                    setCookie("capacidadCarril2", arrayCarriles[1], 10);
+                    setCookie("capacidadCarril3", arrayCarriles[2], 10);
+                    setCookie("capacidadCarril4", arrayCarriles[3], 10);
+                    setCookie("capacidadCarril5", arrayCarriles[4], 10);
+                    setCookie("capacidadCarril6", arrayCarriles[5], 10);
+                }
+            }else if(idInvitado.charAt(0) == ";"){ //ID valido
+                    // ;PEPE PEPE:::KIA:::ID:::000016
+                let str = idInvitado.split(":::")
+                let strNombre = str[0]
+                let nombre = strNombre.substring(1,strNombre.length)
+                let marca = str[1]
+                let id = str[3]
+
+                //Ver en BD si es la primera vez que juega
+                let primeraVez = true
+
+                if(primeraVez){
+                    document.getElementById("nombre").innerHTML = nombre
+                    document.getElementById("element3").className = "element siVisible"
+                    lottie3.play()
+                    setTimeout(() => {
+                        
+                        document.getElementById("element3").className = "element noVisible"
+                        lottie3.stop()    
+                        gira()
+                        setTimeout(() => {
+                            gira()
+                            let resul = evaluamosSiGana()
+                            if(resul){
+                                iniciaAnimacion()
+                                setTimeout(() => {
+                                    detenAnimacion()
+                                }, 5000);
+                            }else{
+                                iniciaAnimacionFail()
+                                setTimeout(() => {
+                                    detenAnimacionFail()
+                                }, 4000);
+                            }
+                        }, 4000);
+                    }, 3000);
+                }else{
+                    //Codigo repetido
+                }
+            }
         }
-        
+
+        function evaluamosSiGana(){
+            let horaDeArranqueActivacion = new Date()
+            horaDeArranqueActivacion.setHours(parseInt(horaArranque.split(":")[0] ))
+            horaDeArranqueActivacion.setMinutes(parseInt(horaArranque.split(":")[1]))
+            horaDeArranqueActivacion.setSeconds(0)
+
+            let horaActualActivacion = new Date() 
+            
+            let segmentoDeJuego = horaActualActivacion - horaDeArranqueActivacion 
+            let duracionSegmento = numHorasServicio / numPremios
+
+            //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
+            let segmentoActual =Math.floor((segmentoDeJuego/1000) / (duracionSegmento*60))
+            let ganadoresDeSegmentoAnterior = false
+            let ganadoresDeSegmentoActual = false
+
+            if(segmentoActual == 0){
+                ganadoresDeSegmentoActual = arrayGanadores[segmentoActual]
+                ganadoresDeSegmentoAnterior = true
+            }else{
+                ganadoresDeSegmentoActual = arrayGanadores[segmentoActual] 
+                ganadoresDeSegmentoAnterior = arrayGanadores[segmentoActual-1]
+            }
+
+            if(ganadoresDeSegmentoAnterior==0){
+                arrayGanadores[segmentoActual-1] = true
+                setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                return true
+            }else{
+                if(ganadoresDeSegmentoActual==1){
+                    return false
+                }else{
+                    if(segmentoDeJuego >= arrayGanadoresRandom[segmentoActual]){
+                        setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                        arrayGanadores[segmentoActual] = true
+                        return true
+                    }else{
+                        return false
+                    }
+                }
+            }
+            
+        }
     </script>
 </body>
 </html> 
