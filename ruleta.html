@@ -51,6 +51,8 @@
         let arrayCarriles = [-1,-1,-1,-1,-1,-1]
         let arrayGanadores = []
         let arrayGanadoresRandom = []
+        // ;Emilio Jose San Miguel   :::KIA:::ID:::000021
+        let maxQR = 46
 
         function cargaDatos(){
             element = document.getElementById("element")
@@ -235,7 +237,7 @@
                 console.log({keyCode})
                 // strInput += e.key
                 // index +=1
-                largoCodigoQR = 29
+                largoCodigoQR =maxQR
                 if (e.keyCode == 13) {
                     largoCodigoQR = strInput.length
                 }
@@ -274,7 +276,7 @@
             });
 
             document.addEventListener('paste', (event) => {
-                largoCodigoQR = 29 + 1
+                largoCodigoQR = maxQR
                 event.preventDefault();
                 nuevo = (event.clipboardData.getData('text/plain'));
                 paste = nuevo;
@@ -284,6 +286,9 @@
                     strInput = ''
                     idInvitado = paste
                     tenemosQR(idInvitado)
+                }else if(paste == ":llenado"){
+                    idInvitado = paste
+                    tenemosQR(idInvitado)      
                 }
             });
    
@@ -301,9 +306,9 @@
 
             //Vamos a ver si es intruccion de llenado de vending
             if(idInvitado.charAt(0) == ":"){
-                let instruccion = idInvitado.slice(":")[1]
+                let instruccion = idInvitado.split(":")[1]
                 if(instruccion == "llenado"){
-
+                    //:llenado
                     arrayCarriles[0] = getCookie("capacidadMaximaCarril1")
                     arrayCarriles[1] = getCookie("capacidadMaximaCarril2")
                     arrayCarriles[2] = getCookie("capacidadMaximaCarril3")
@@ -368,38 +373,49 @@
 
             let horaActualActivacion = new Date() 
             
-            let segmentoDeJuego = horaActualActivacion - horaDeArranqueActivacion 
-            let duracionSegmento = numHorasServicio / numPremios
+            let segmentoDeJuego = (horaActualActivacion - horaDeArranqueActivacion) / 1000
+             
+            if(segmentoDeJuego >= 0){ 
+                let duracionSegmento = numHorasServicio / numPremios
 
-            //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
-            let segmentoActual =Math.floor((segmentoDeJuego/1000) / (duracionSegmento*60))
-            let ganadoresDeSegmentoAnterior = false
-            let ganadoresDeSegmentoActual = false
-
-            if(segmentoActual == 0){
-                ganadoresDeSegmentoActual = arrayGanadores[segmentoActual]
-                ganadoresDeSegmentoAnterior = true
-            }else{
-                ganadoresDeSegmentoActual = arrayGanadores[segmentoActual] 
-                ganadoresDeSegmentoAnterior = arrayGanadores[segmentoActual-1]
-            }
-
-            if(ganadoresDeSegmentoAnterior==0){
-                arrayGanadores[segmentoActual-1] = true
-                setCookie("arrayGanadores", arrayGanadores.toString(), 10)
-                return true
-            }else{
-                if(ganadoresDeSegmentoActual==1){
+                //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
+                let segmentoActual =Math.floor((segmentoDeJuego) / (duracionSegmento*60))
+                if(segmentoActual > numPremios ){
                     return false
                 }else{
-                    if(segmentoDeJuego >= arrayGanadoresRandom[segmentoActual]){
+                    let ganadoresDeSegmentoAnterior = false
+                    let ganadoresDeSegmentoActual = false
+
+                    if(segmentoActual == 0){
+                        ganadoresDeSegmentoActual = arrayGanadores[segmentoActual]
+                        ganadoresDeSegmentoAnterior = true
+                    }else{
+                        ganadoresDeSegmentoActual = arrayGanadores[segmentoActual] 
+                        ganadoresDeSegmentoAnterior = arrayGanadores[segmentoActual-1]
+                    }
+
+                    if(ganadoresDeSegmentoAnterior==0){
+                        arrayGanadores[segmentoActual-1] = true
                         setCookie("arrayGanadores", arrayGanadores.toString(), 10)
-                        arrayGanadores[segmentoActual] = true
                         return true
                     }else{
-                        return false
+                        if(ganadoresDeSegmentoActual==1){
+                            return false
+                        }else{
+                            if(segmentoDeJuego >= arrayGanadoresRandom[segmentoActual]){
+                                setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                                arrayGanadores[segmentoActual] = true
+                                return true
+                            }else{
+                                return false
+                            }
+                        }
                     }
                 }
+
+                
+            }else{
+                return true
             }
             
         }

@@ -40,7 +40,8 @@
             let id = urlParams.get('id');
             document.getElementById("nombre").innerHTML = nombre
             let idFinal = ('000000'+id).slice(-6);
-            let urlImagenQR = `;${nombre}:::KIA:::ID:::${idFinal}`
+            let nombreFinal = (nombre + "                         ").substring(0,25);
+            let urlImagenQR = `;${nombreFinal}:::KIA:::ID:::${idFinal}`
             // let imagen = document.getElementById("qr")
             // imagen.src = urlImagenQR
             try{
