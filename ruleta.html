@@ -17,16 +17,16 @@
     <script src="js/cookie.js"type="text/javascript"></script>    
 </head>
 <body onload="cargaDatos()">
-    <div id="element1" class="element noVisible" onclick="gira()">
+    <div id="element1" class="element noVisible">
     </div>
-    <div id="element2" class="element noVisible" onclick="gira()">
+    <div id="element2" class="element noVisible">
     </div>
-    <div id="element3" class="element noVisible" onclick="gira()">
+    <div id="element3" class="element noVisible">
     </div>
-    <div id="element4" class="element noVisible" onclick="gira()">
+    <div id="element4" class="element noVisible">
     </div>  
     <!-- <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo"> -->
-    <img src="jpg/imagen_fondo_kia_LOW.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada">
+    <img src="jpg/imagen_fondo_kia_LOW.jpg" alt="" srcset="" id="imagenPortada" class="imagenPortada" onclick="connectSerial()">
     <div class="cuerpo">
         <div class="titulo2">Juega a la ruleta con KIA <br><span id="nombre" class="nombre"></span></div>
         <div class="titulo">Presenta tu código QR <br> con el que podrás participar por un premio en nuestra ruleta</div>
@@ -59,7 +59,7 @@
         let arrayGanadores = []
         let arrayGanadoresRandom = []
         // ;Emilio Jose San Miguel   :::KIA:::ID:::000021
-        let maxQR = 46
+        let maxQR = 45
 
         function cargaDatos(){
             element = document.getElementById("element")
@@ -111,14 +111,14 @@
             arrayGanadoresRandom = getCookie("arrayGanadoresRandom").split(',');
                         
             creaEventosTeclado()
-            connectSerial()
         }
         var port, textEncoder, writableStreamClosed, writer;
     
         async function connectSerial() {
-            if (document.getElementById("salir").innerHTML == "Salir" ){
-                window.location.href = 'index.html';
-            }else{       
+            // if (document.getElementById("salir").innerHTML == "Salir" ){
+            //     window.location.href = 'index.html';
+            // }else{       
+                console.log("entramos a conecct serial")
                 if ("serial" in navigator) {
                     try {
 
@@ -148,15 +148,16 @@
                         //await sendCharacterNumber(49);
                         // writer = port.writable.getWriter();
                         // const data = new Uint8Array([49]);
-                        document.getElementById("salir").innerHTML = "Entrega..."
+                        //document.getElementById("salir").innerHTML = "Entrega..."
                         //setTimeout(sendCharacterNumber,2000)
+                        console.log("salimos de conect serial")
                     } catch(err) {
                         alert("Serial Connection Failed: " + err);
                     }
                 }else{
                     alert("API serial no soportada");
                 }
-            }
+            // }
         }
 
         async function sendCharacterNumber(){
@@ -529,6 +530,27 @@
                 return true
             }
             
+        }
+
+        async function listenToPort() {
+            const textDecoder = new TextDecoderStream();
+            const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+            const reader = textDecoder.readable.getReader();
+            console.log("Vamos a escuchar el serial tambien")
+            let str = ""
+            // Listen to data coming from the serial device.
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) {
+                    //Allow the serial port to be closed later.
+                    reader.releaseLock();
+                    console.log("Serial: " + str);
+                    str ="";
+                    break;
+                }
+                // value is a string.
+                str = str + value
+            }
         }
     </script>
 </body>
