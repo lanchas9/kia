@@ -48,7 +48,14 @@
         let numHorasServicio = 100
         let horaArranque = '00:00'
         let numCarriles = 6
-        let arrayCarriles = [-1,-1,-1,-1,-1,-1]
+        let inventarioPremios = {
+            carril01 : 0,
+            carril02 : 0,
+            carril03 : 0,
+            carril04 : 0,
+            carril05 : 0,
+            carril06 : 0
+        }
         let arrayGanadores = []
         let arrayGanadoresRandom = []
         // ;Emilio Jose San Miguel   :::KIA:::ID:::000021
@@ -94,16 +101,119 @@
             numHorasServicio = parseInt(getCookie("numHorasServicio"))
             horaArranque = getCookie("horaArranque")
             numCarriles = parseInt(getCookie("numCarriles"))
-            arrayCarriles[0] = parseInt(getCookie("capacidadCarril1"))
-            arrayCarriles[1] = parseInt(getCookie("capacidadCarril2"))
-            arrayCarriles[2] = parseInt(getCookie("capacidadCarril3"))
-            arrayCarriles[3] = parseInt(getCookie("capacidadCarril4"))
-            arrayCarriles[4] = parseInt(getCookie("capacidadCarril5"))
-            arrayCarriles[5] = parseInt(getCookie("capacidadCarril6"))
+            inventarioPremios.carril01 = parseInt(getCookie("capacidadCarril1"))
+            inventarioPremios.carril02 = parseInt(getCookie("capacidadCarril2"))
+            inventarioPremios.carril03 = parseInt(getCookie("capacidadCarril3"))
+            inventarioPremios.carril04 = parseInt(getCookie("capacidadCarril4"))
+            inventarioPremios.carril05 = parseInt(getCookie("capacidadCarril5"))
+            inventarioPremios.carril06 = parseInt(getCookie("capacidadCarril6"))
             arrayGanadores = getCookie("arrayGanadores").split(',');
             arrayGanadoresRandom = getCookie("arrayGanadoresRandom").split(',');
                         
             creaEventosTeclado()
+            connectSerial()
+        }
+        var port, textEncoder, writableStreamClosed, writer;
+    
+        async function connectSerial() {
+            if (document.getElementById("salir").innerHTML == "Salir" ){
+                window.location.href = 'index.html';
+            }else{       
+                if ("serial" in navigator) {
+                    try {
+
+                        const portsYaAutorizados = await navigator.serial.getPorts();    
+                        if (portsYaAutorizados.length){
+                            port = portsYaAutorizados[0];
+                            console.log("Ya autorizado");
+                        }else{
+                            console.log("Vamos a Preguntar de nuevo");
+                            const filters = [
+                            { usbVendorId: 0x2341, usbProductId: 0x0042 }
+                            //     ,{ usbVendorId: 0x2341, usbProductId: 0x0001 }
+                            ];
+                            port = await navigator.serial.requestPort({ filters });
+                        }
+                        
+                        await port.open({ baudRate: "9600" });
+                        // const { usbProductId, usbVendorId } = port.getInfo();
+                        // console.log({usbProductId})
+                        // console.log({usbVendorId})
+                        listenToPort();
+            
+                        textEncoder = new TextEncoderStream();
+                        writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+            
+                        writer = textEncoder.writable.getWriter();
+                        //await sendCharacterNumber(49);
+                        // writer = port.writable.getWriter();
+                        // const data = new Uint8Array([49]);
+                        document.getElementById("salir").innerHTML = "Entrega..."
+                        //setTimeout(sendCharacterNumber,2000)
+                    } catch(err) {
+                        alert("Serial Connection Failed: " + err);
+                    }
+                }else{
+                    alert("API serial no soportada");
+                }
+            }
+        }
+
+        async function sendCharacterNumber(){
+            let carrilParaDespachar = 0;
+            let aleatorios = []
+            if (inventarioPremios.carril01 > 0){
+                aleatorios.push("carril01")
+            }
+             if (inventarioPremios.carril02 > 0){
+                aleatorios.push("carril02")
+            }
+             if (inventarioPremios.carril03 > 0){
+                aleatorios.push("carril03")
+            }
+             if (inventarioPremios.carril04 > 0){
+                aleatorios.push("carril04")
+            }
+             if (inventarioPremios.carril05 > 0){
+                aleatorios.push("carril05")
+            }
+             if (inventarioPremios.carril06 > 0){
+                aleatorios.push("carril06")
+            }
+
+            const randomIndex = Math.floor(Math.random() * aleatorios.length);
+            console.log({aleatorios})
+            let seleccionado = aleatorios[randomIndex]
+            console.log({seleccionado})
+
+
+             if (seleccionado == "carril01"){
+                carrilParaDespachar = 1
+                --inventarioPremios.carril01;
+            }else if (seleccionado == "carril02"){
+                carrilParaDespachar = 2
+                --inventarioPremios.carril02;
+            }else if (seleccionado == "carril03"){
+                carrilParaDespachar = 3
+                --inventarioPremios.carril03;
+            }else if (seleccionado == "carril04"){
+                carrilParaDespachar = 4
+                --inventarioPremios.carril04;
+            }else if (seleccionado == "carril05"){
+                carrilParaDespachar = 5
+                --inventarioPremios.carril05;
+            }else if (seleccionado == "carril06"){
+                carrilParaDespachar = 6
+                --inventarioPremios.carril06;
+            }
+            console.log({carrilParaDespachar})
+             
+
+            try{
+                await writer.write("" + carrilParaDespachar);
+            }catch(err){
+                console.error("Mensaje: " + err)
+            }
         }
 
         function iniciaAnimacion(){
@@ -309,19 +419,19 @@
                 let instruccion = idInvitado.split(":")[1]
                 if(instruccion == "llenado"){
                     //:llenado
-                    arrayCarriles[0] = getCookie("capacidadMaximaCarril1")
-                    arrayCarriles[1] = getCookie("capacidadMaximaCarril2")
-                    arrayCarriles[2] = getCookie("capacidadMaximaCarril3")
-                    arrayCarriles[3] = getCookie("capacidadMaximaCarril4")
-                    arrayCarriles[4] = getCookie("capacidadMaximaCarril5")
-                    arrayCarriles[5] = getCookie("capacidadMaximaCarril6")
+                    inventarioPremios.carril01 = getCookie("capacidadMaximaCarril1")
+                    inventarioPremios.carril02 = getCookie("capacidadMaximaCarril2")
+                    inventarioPremios.carril03 = getCookie("capacidadMaximaCarril3")
+                    inventarioPremios.carril04 = getCookie("capacidadMaximaCarril4")
+                    inventarioPremios.carril05 = getCookie("capacidadMaximaCarril5")
+                    inventarioPremios.carril06 = getCookie("capacidadMaximaCarril6")
 
-                    setCookie("capacidadCarril1", arrayCarriles[0], 10);
-                    setCookie("capacidadCarril2", arrayCarriles[1], 10);
-                    setCookie("capacidadCarril3", arrayCarriles[2], 10);
-                    setCookie("capacidadCarril4", arrayCarriles[3], 10);
-                    setCookie("capacidadCarril5", arrayCarriles[4], 10);
-                    setCookie("capacidadCarril6", arrayCarriles[5], 10);
+                    setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
+                    setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
+                    setCookie("capacidadCarril3", inventarioPremios.carril03, 10);
+                    setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
+                    setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
+                    setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
                 }
             }else if(idInvitado.charAt(0) == ";"){ //ID valido
                     // ;PEPE PEPE:::KIA:::ID:::000016
@@ -347,6 +457,7 @@
                             gira()
                             let resul = evaluamosSiGana()
                             if(resul){
+                                sendCharacterNumber()
                                 iniciaAnimacion()
                                 setTimeout(() => {
                                     detenAnimacion()
