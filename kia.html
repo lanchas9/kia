@@ -16,7 +16,7 @@
     <script src="js/pixi.js"></script>
     <script src="js/cookie.js"type="text/javascript"></script>    
 </head>
-<body onload="cargaDatos()">
+<body onload="cargaDatos()" onclick="connectSerial()">
     <div id="element5" class="element siVisible">
         <img src="jpg/1.jpg" alt="" srcset="" onclick="" id="imagen">
     </div>  
@@ -38,6 +38,7 @@
     <!-- <div id="elem" class="element"></div>-->
     <script type="text/javascript">
         //vending 5:15pm del 24 de Mayo 2023
+        let yaConfiguramosSerial = false
         var lottie1
         var lottie2
         var lottie3
@@ -60,6 +61,7 @@
         let maxQR = 45
 
         function cargaDatos(){
+            alert("recuerda darle click a la pantalla para Inicializar VENDING MACHINE")
             element = document.getElementById("element")
             lottie1 = lottie.loadAnimation({
             container: element1, // the dom element that will contain the animation
@@ -116,6 +118,7 @@
             // if (document.getElementById("salir").innerHTML == "Salir" ){
             //     window.location.href = 'index.html';
             // }else{       
+                strInput = ""
                 console.log("entramos a conecct serial")
                 if ("serial" in navigator) {
                     try {
@@ -149,6 +152,7 @@
                         //document.getElementById("salir").innerHTML = "Entrega..."
                         //setTimeout(sendCharacterNumber,2000)
                         console.log("salimos de conect serial")
+                        yaConfiguramosSerial=true
                     } catch(err) {
                         alert("Serial Connection Failed: " + err);
                     }
@@ -443,19 +447,22 @@
 
                 //Ver en BD si es la primera vez que juega
                 let primeraVez = false
+                let dataJson = {
+                    idUsuario: parseInt(id)
+                }
                 //----------
                 const settings = {
-                    method: 'GET',
+                    method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                     },
                     body: 
-                        dataJson
+                        JSON.stringify(dataJson)
                 };
                     
                 try {
-                    const fetchResponse = await fetch(`http://localhost:3000/kia/guardaIdParticipante`, settings);
+                    const fetchResponse = await fetch(`http://localhost:4000/kia/guardaIdParticipante`, settings);
                     const data = await fetchResponse.json();
                     let resul = data.statusCode
                     /* let resul = 200; */
@@ -470,6 +477,7 @@
                     console.log("Error:" + e);
                 }
                 //----------
+                // primeraVez=true
                 if(primeraVez){
                     document.getElementById("imagen").src = "jpg/2.jpg"
                     document.getElementById("divRuleta").className = "cuerpo element siVisible"
@@ -487,15 +495,22 @@
                             let resul = evaluamosSiGana()
                             
                             if(resul){
-                                //sendCharacterNumber()
-                                
+                                sendCharacterNumber()
+                                setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
+                                setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
+                                setCookie("capacidadCarril3", inventarioPremios.carril03, 10);
+                                setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
+                                setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
+                                setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
+                
                                 document.getElementById("imagen").src = "jpg/3.jpg"
                                 document.getElementById("divRuleta").className = "cuerpo element noVisible"
                                 
                                 iniciaAnimacion()
                                 setTimeout(() => {
                                     detenAnimacion()
-                                    }, 5000);
+                                    document.getElementById("imagen").src = "jpg/1.jpg"
+                                    }, 7000);
                             }else{
                                 document.getElementById("imagen").src = "jpg/4.jpg"
                                 document.getElementById("divRuleta").className = "cuerpo element noVisible"
@@ -503,6 +518,7 @@
                                 iniciaAnimacionFail()
                                 setTimeout(() => {
                                     detenAnimacionFail()
+                                    document.getElementById("imagen").src = "jpg/1.jpg"
                                 }, 4000);
                             }
                         }, 4000);
