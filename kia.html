@@ -37,7 +37,7 @@
     
     <!-- <div id="elem" class="element"></div>-->
     <script type="text/javascript">
-        //vending 11:10pm del 24 de Mayo 2023
+        //LAPTOP EMILIO 11:10pm del 24 de Mayo 2023
         let yaConfiguramosSerial = false
         var lottie1
         var lottie2
@@ -58,7 +58,7 @@
         let arrayGanadores = []
         let arrayGanadoresRandom = []
         // ;Emilio Jose San Miguel   :::KIA:::ID:::000021
-        let maxQR = 45
+        let maxQR = 20
 
         function cargaDatos(){
             alert("recuerda darle click a la pantalla para Inicializar VENDING MACHINE")
@@ -396,12 +396,12 @@
                 paste = nuevo;
                 index = paste.length
                 let strLlenado = paste.toUpperCase()
-                if(index == (largoCodigoQR+1)){
+                if(index == (largoCodigoQR)){
                     index = 0
                     strInput = ''
                     idInvitado = paste
                     tenemosQR(idInvitado)
-                }else if(strLlenado == ":llenado"){
+                }else if(strLlenado.toUpperCase() == "///LLENADO"){
                     idInvitado = paste
                     tenemosQR(idInvitado)      
                 }
@@ -420,8 +420,8 @@
             console.log({idInvitado})
 
             //Vamos a ver si es intruccion de llenado de vending
-            if(idInvitado.charAt(0) == ":"){
-                let instruccion = idInvitado.split(":")[1]
+            if(idInvitado.includes("///")){
+                let instruccion = idInvitado.split("///")[1]
                 instruccion = instruccion.toUpperCase()
                 if(instruccion == "LLENADO"){
                     //:llenado
@@ -438,104 +438,105 @@
                     setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
                     setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
                     setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
-                }
-            }else if(idInvitado.charAt(0) == ";"){ //ID valido
-                    // 
-                let str = idInvitado.split(":::")
-                let strNombre = str[0]
-                let nombre = strNombre.substring(1,strNombre.length)
-                let marca = str[1]
-                let id = str[3]
-
-                //Ver en BD si es la primera vez que juega
-                let primeraVez = false
-                let dataJson = {
-                    idUsuario: parseInt(id)
-                }
-                //----------
-                const settings = {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: 
-                        JSON.stringify(dataJson)
-                };
-                    
-                try {
-                    const fetchResponse = await fetch(`http://localhost:4000/kia/guardaIdParticipante`, settings);
-                    const data = await fetchResponse.json();
-                    let resul = data.statusCode
-                    /* let resul = 200; */
-                    if(resul == 200){
-                        console.log("Datos guardados correctamente")
-                        primeraVez = true
-                    }else{
-                        console.log("Error: " + data.message);
-                        primeraVez = false
-                    }
-                } catch (e) {
-                    console.log("Error:" + e);
-                }
-                //----------
-                primeraVez=true
-                if(primeraVez){
-                    document.getElementById("imagen").src = "jpg/2.jpg"
-                    document.getElementById("divRuleta").className = "cuerpo element siVisible"
-
-                    //document.getElementById("nombre").innerHTML = nombre
-                    document.getElementById("element3").className = "element siVisible"
-                    lottie3.play()
-                    setTimeout(() => {
-                        
-                        document.getElementById("element3").className = "element noVisible"
-                        lottie3.stop()    
-                        gira()
-                        setTimeout(() => {                                
-                            gira()
-                            let resul = evaluamosSiGana()
-                            
-                            if(resul){
-                                sendCharacterNumber()
-                                setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
-                                setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
-                                setCookie("capacidadCarril3", inventarioPremios.carril03, 10);
-                                setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
-                                setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
-                                setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
                 
-                                document.getElementById("imagen").src = "jpg/3.jpg"
-                                document.getElementById("divRuleta").className = "cuerpo element noVisible"
+                }else if(instruccion == "KIA"){ //ID valido
+                        // 
+                    let str = idInvitado.split("///")
+                    let strNombre = str[0]
+                    let nombre = strNombre.substring(1,strNombre.length)
+                    let marca = str[1]
+                    let id = str[3]
+
+                    //Ver en BD si es la primera vez que juega
+                    let primeraVez = false
+                    let dataJson = {
+                        idUsuario: parseInt(id)
+                    }
+                    //----------
+                    const settings = {
+                        method: 'POST',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json',
+                        },
+                        body: 
+                            JSON.stringify(dataJson)
+                    };
+                        
+                    try {
+                        const fetchResponse = await fetch(`http://localhost:4000/kia/guardaIdParticipante`, settings);
+                        const data = await fetchResponse.json();
+                        let resul = data.statusCode
+                        /* let resul = 200; */
+                        if(resul == 200){
+                            console.log("Datos guardados correctamente")
+                            primeraVez = true
+                        }else{
+                            console.log("Error: " + data.message);
+                            primeraVez = false
+                        }
+                    } catch (e) {
+                        console.log("Error:" + e);
+                    }
+                    //----------
+                    primeraVez=true
+                    if(primeraVez){
+                        document.getElementById("imagen").src = "jpg/2.jpg"
+                        document.getElementById("divRuleta").className = "cuerpo element siVisible"
+
+                        //document.getElementById("nombre").innerHTML = nombre
+                        document.getElementById("element3").className = "element siVisible"
+                        lottie3.play()
+                        setTimeout(() => {
+                            
+                            document.getElementById("element3").className = "element noVisible"
+                            lottie3.stop()    
+                            gira()
+                            setTimeout(() => {                                
+                                gira()
+                                let resul = evaluamosSiGana()
                                 
-                                iniciaAnimacion()
-                                setTimeout(() => {
-                                    detenAnimacion()
-                                    document.getElementById("imagen").src = "jpg/1.jpg"
-                                    }, 7000);
-                            }else{
-                                document.getElementById("imagen").src = "jpg/4.jpg"
-                                document.getElementById("divRuleta").className = "cuerpo element noVisible"
-                                
-                                iniciaAnimacionFail()
-                                setTimeout(() => {
-                                    detenAnimacionFail()
-                                    document.getElementById("imagen").src = "jpg/1.jpg"
-                                }, 4000);
-                            }
-                        }, 4000);
-                    }, 3000);
+                                if(resul){
+                                    sendCharacterNumber()
+                                    setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
+                                    setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
+                                    setCookie("capacidadCarril3", inventarioPremios.carril03, 10);
+                                    setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
+                                    setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
+                                    setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
+                    
+                                    document.getElementById("imagen").src = "jpg/3.jpg"
+                                    document.getElementById("divRuleta").className = "cuerpo element noVisible"
+                                    
+                                    iniciaAnimacion()
+                                    setTimeout(() => {
+                                        detenAnimacion()
+                                        document.getElementById("imagen").src = "jpg/1.jpg"
+                                        }, 7000);
+                                }else{
+                                    document.getElementById("imagen").src = "jpg/4.jpg"
+                                    document.getElementById("divRuleta").className = "cuerpo element noVisible"
+                                    
+                                    iniciaAnimacionFail()
+                                    setTimeout(() => {
+                                        detenAnimacionFail()
+                                        document.getElementById("imagen").src = "jpg/1.jpg"
+                                    }, 4000);
+                                }
+                            }, 4000);
+                        }, 3000);
+                    }else{
+                        document.getElementById("imagen").src = "jpg/5.jpg"
+                        setTimeout(() => {
+                            document.getElementById("imagen").src = "jpg/1.jpg"
+                        }, 3000);
+                    }
                 }else{
                     document.getElementById("imagen").src = "jpg/5.jpg"
                     setTimeout(() => {
                         document.getElementById("imagen").src = "jpg/1.jpg"
                     }, 3000);
                 }
-            }else{
-                document.getElementById("imagen").src = "jpg/5.jpg"
-                setTimeout(() => {
-                    document.getElementById("imagen").src = "jpg/1.jpg"
-                }, 3000);
             }
         }
 
