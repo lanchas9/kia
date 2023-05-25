@@ -37,7 +37,7 @@
     
     <!-- <div id="elem" class="element"></div>-->
     <script type="text/javascript">
-        //vending 5:15pm del 24 de Mayo 2023
+        //vending 11:10pm del 24 de Mayo 2023
         let yaConfiguramosSerial = false
         var lottie1
         var lottie2
@@ -395,12 +395,13 @@
                 nuevo = (event.clipboardData.getData('text/plain'));
                 paste = nuevo;
                 index = paste.length
+                let strLlenado = paste.toUpperCase()
                 if(index == (largoCodigoQR+1)){
                     index = 0
                     strInput = ''
                     idInvitado = paste
                     tenemosQR(idInvitado)
-                }else if(paste == ":llenado"){
+                }else if(strLlenado == ":llenado"){
                     idInvitado = paste
                     tenemosQR(idInvitado)      
                 }
@@ -421,7 +422,8 @@
             //Vamos a ver si es intruccion de llenado de vending
             if(idInvitado.charAt(0) == ":"){
                 let instruccion = idInvitado.split(":")[1]
-                if(instruccion == "llenado"){
+                instruccion = instruccion.toUpperCase()
+                if(instruccion == "LLENADO"){
                     //:llenado
                     inventarioPremios.carril01 = getCookie("capacidadMaximaCarril1")
                     inventarioPremios.carril02 = getCookie("capacidadMaximaCarril2")
@@ -477,7 +479,7 @@
                     console.log("Error:" + e);
                 }
                 //----------
-                // primeraVez=true
+                primeraVez=true
                 if(primeraVez){
                     document.getElementById("imagen").src = "jpg/2.jpg"
                     document.getElementById("divRuleta").className = "cuerpo element siVisible"
