@@ -17,6 +17,7 @@
     <div class="banner">
         <img src="jpg/logo/1216_Kia_basic_logo_White_no_background.png" alt="" srcset="" class="logo" id="imagenLogo">
         <img src="jpg/backKIAlow.jpg" alt="" srcset="" id="imagenBack" class="imagenPortada">
+        <h2>Premios Entregados: <b id="premiosEntregados">0</b></h2>
     </div>
     <div class="margen">
         <div class="cuerpo2">
@@ -63,6 +64,10 @@
             document.getElementById("horaArranque").value = getCookie("horaArranque");
             document.getElementById("numHorasServicio").value = getCookie("numHorasServicio");
             document.getElementById("numPremios").value = getCookie("numPremios");             
+            let premiosEntregados = getCookie("arrayGanadores").split(',');
+            let temp = premiosEntregados.filter(item => item=="true")
+            document.getElementById("premiosEntregados").innerHTML = temp.length
+
         }
 
 
@@ -171,7 +176,7 @@
                         for (let index = 0; index < numPremios; index++) {
                             arrayGanadoresRandom.push(Math.floor(Math.random() * (preriodoSegundos)))
                         }
-                        let arrayGanadores = Array(numPremios).fill(0)
+                        let arrayGanadores = Array(numPremios).fill("false")
                         setCookie("arrayGanadores", arrayGanadores.toString(), 10)
                         setCookie("arrayGanadoresRandom", arrayGanadoresRandom.toString(), 10)
                         setCookie("horaArranque", horaArranque, 10);
