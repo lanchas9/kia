@@ -141,3 +141,7 @@ body{
     .contador{
         color: blue;
     }
+
+    .liga{
+        text-decoration: none;
+    }

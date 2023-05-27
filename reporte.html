@@ -21,17 +21,22 @@
     </div>
     <div class="cuerpo centrado">
         <div class="titulo"><B>REPORTE REGISTROS DIARIOS KIA</B></div>
-        <div class="titulo">26 DE MAYO 2023:</div><span id="dia1" class="contador"></span>
-        <div class="titulo">27 DE MAYO 2023:</div><span id="dia2" class="contador"></span>
-        <div class="titulo">28 DE MAYO 2023:</div><span id="dia3" class="contador"></span>
+        <a href="" onclick="detalle()" class="liga" id="liga1">
+            <div class="titulo">26 DE MAYO 2023:</div><span id="dia1" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga2">
+            <div class="titulo">27 DE MAYO 2023:</div><span id="dia2" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga3">
+            <div class="titulo">28 DE MAYO 2023:</div><span id="dia3" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
         <br>
-        <div class="centrado">
-            <div id="qrcode1"  class="qr"></div>
         </div>
-        <br>
-        <button class="boton" onclick="regresa()">Salir</button>
-    </div>
-
+        <button class="boton" onclick="cargaDatos()">Recargar Datos</button>
+    
     <script type="text/javascript">
         async function cargaDatos(){
             let dataJson = {}
@@ -52,13 +57,16 @@
                 if(resul == 200){
                     console.log("Datos del reporte correctos")
                     let dia1 = data.message[0].numRegistros
-                    document.getElementById("dia1").innerHTML = dia1
+                    document.getElementById("dia1").innerHTML = dia1 + " personas"
+                    document.getElementById("liga1").href = "reporteDetalle.html?diaEspecifico=" + data.message[0].fechaRegistro 
 
                     let dia2 = data.message[1].numRegistros
-                    document.getElementById("dia1").innerHTML = dia2
+                    document.getElementById("dia2").innerHTML = dia2 + " personas"
+                    document.getElementById("liga2").href = "reporteDetalle.html?diaEspecifico=" + data.message[1].fechaRegistro
 
                     let dia3 = data.message[2].numRegistros
-                    document.getElementById("dia1").innerHTML = dia3                 
+                    document.getElementById("dia3").innerHTML = dia3 + " personas"   
+                    document.getElementById("liga3").href = "reporteDetalle.html?diaEspecifico=" + data.message[2].fechaRegistro
                 }else{
                     console.log("Error: " + data.message);  
                 }
