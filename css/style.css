@@ -145,3 +145,8 @@ body{
     .liga{
         text-decoration: none;
     }
+
+    .imagenLogo{
+        width: 25%;
+        max-width: 150px;
+    }

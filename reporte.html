@@ -32,12 +32,23 @@
         <a href="" onclick="detalle()" class="liga" id="liga3">
             <div class="titulo">28 DE MAYO 2023:</div><span id="dia3" class="contador"> 0 personas</span>
         </a>
-        <br><br>
         <br>
-        </div>
         <button class="boton" onclick="cargaDatos()">Recargar Datos</button>
-    
+        <br><br><br><br>
+        <a href="" onclick="reporteCompleto()" class="liga" id="liga3">
+            <div class="titulo">Reporte Completo 3 días</div>
+            <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
+        </a>
+        <br><br>
+    </div>
+
+        
     <script type="text/javascript">
+        function reporteCompleto(){
+            window.location.href = `reporteCompleto.html`;
+        }
+
+
         async function cargaDatos(){
             let dataJson = {}
             //----------
