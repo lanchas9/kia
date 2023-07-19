@@ -425,12 +425,12 @@
                 instruccion = instruccion.toUpperCase()
                 if(instruccion == "LLENADO"){
                     console.log("entramos llenado")
-                    inventarioPremios.carril01 = getCookie("capacidadMaximaCarril1")
-                    inventarioPremios.carril02 = getCookie("capacidadMaximaCarril2")
-                    inventarioPremios.carril03 = getCookie("capacidadMaximaCarril3")
-                    inventarioPremios.carril04 = getCookie("capacidadMaximaCarril4")
-                    inventarioPremios.carril05 = getCookie("capacidadMaximaCarril5")
-                    inventarioPremios.carril06 = getCookie("capacidadMaximaCarril6")
+                    inventarioPremios.carril01 = parseInt(getCookie("capacidadMaximaCarril1"))
+                    inventarioPremios.carril02 = parseInt(getCookie("capacidadMaximaCarril2"))
+                    inventarioPremios.carril03 = parseInt(getCookie("capacidadMaximaCarril3"))
+                    inventarioPremios.carril04 = parseInt(getCookie("capacidadMaximaCarril4"))
+                    inventarioPremios.carril05 = parseInt(getCookie("capacidadMaximaCarril5"))
+                    inventarioPremios.carril06 = parseInt(getCookie("capacidadMaximaCarril6"))
 
                     setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
                     setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
