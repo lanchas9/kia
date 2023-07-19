@@ -137,3 +137,16 @@ body{
     .nombre{
         color: red;
     }
+
+    .contador{
+        color: blue;
+    }
+
+    .liga{
+        text-decoration: none;
+    }
+
+    .imagenLogo{
+        width: 25%;
+        max-width: 150px;
+    }
