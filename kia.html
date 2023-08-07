@@ -46,6 +46,11 @@
         let numPremios = 100
         let numHorasServicio = 100
         let horaArranque = '00:00'
+        let metodoEntregaPremios = 0
+        let numIntentos = 0
+        let numLectura = 0
+        let numGanadores = 0
+
         let numCarriles = 6
         let inventarioPremios = {
             carril01 : 0,
@@ -96,8 +101,10 @@
             });
 
             //Leer desde Cookie los valores persistentes
-
+            metodoEntregaPremios = parseInt(getCookie("metodoEntregaPremios"));
             numPremios = parseInt(getCookie("numPremios"))
+            numGanadores = parseInt(getCookie("numPremios"))
+
             numHorasServicio = parseInt(getCookie("numHorasServicio"))
             horaArranque = getCookie("horaArranque")
             numCarriles = parseInt(getCookie("numCarriles"))
@@ -404,6 +411,9 @@
                 }else if(strLlenado.toUpperCase() == "///LLENADO"){
                     idInvitado = paste
                     tenemosQR(idInvitado)      
+                }else if(strLlenado.toUpperCase() == "///RESET_GANADORES"){
+                    numGanadores = 0
+                    setCookie("numGanadores", numGanadores, 10);      
                 }
             });
    
@@ -423,7 +433,10 @@
             if(idInvitado.includes("///")){
                 let instruccion = idInvitado.split("///")[1]
                 instruccion = instruccion.toUpperCase()
-                if(instruccion == "LLENADO"){
+                if(instruccion == "RESET_GANADORES"){
+                    numGanadores = 0
+                    setCookie("numGanadores", numGanadores, 10);
+                }else if(instruccion == "LLENADO"){
                     console.log("entramos llenado")
                     inventarioPremios.carril01 = parseInt(getCookie("capacidadMaximaCarril1"))
                     inventarioPremios.carril02 = parseInt(getCookie("capacidadMaximaCarril2"))
@@ -511,6 +524,8 @@
                                 let resul = evaluamosSiGana()
                                 
                                 if(resul){
+                                    numGanadores++
+                                    setCookie("numGanadores", numGanadores, 10);
                                     sendCharacterNumber()
                                     setCookie("capacidadCarril1", inventarioPremios.carril01, 10);
                                     setCookie("capacidadCarril2", inventarioPremios.carril02, 10);
@@ -555,71 +570,79 @@
         }
 
         function evaluamosSiGana(){
-            let horaDeArranqueActivacion = new Date()
-            horaDeArranqueActivacion.setHours(parseInt(horaArranque.split(":")[0] ))
-            horaDeArranqueActivacion.setMinutes(parseInt(horaArranque.split(":")[1]))
-            horaDeArranqueActivacion.setSeconds(0)
+            numIntentos++
+            if(metodoEntregaPremios == 1){
+                let resul = numLectura % numIntentos
+                if(resul == 1){
+                    return true
+                }
 
-            let horaActualActivacion = new Date() 
-            console.log({horaActualActivacion})
-            let segmentoDeJuego = (horaActualActivacion - horaDeArranqueActivacion) / 1000
-             console.log({segmentoDeJuego})
+            }else if(metodoEntregaPremios == 2){
+                let horaDeArranqueActivacion = new Date()
+                horaDeArranqueActivacion.setHours(parseInt(horaArranque.split(":")[0] ))
+                horaDeArranqueActivacion.setMinutes(parseInt(horaArranque.split(":")[1]))
+                horaDeArranqueActivacion.setSeconds(0)
 
-            if(segmentoDeJuego >= 0){ 
-                let duracionSegmento = numHorasServicio / numPremios
-                console.log({duracionSegmento})
-             
-                //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
-                let segmentoActual =Math.floor((segmentoDeJuego) / (duracionSegmento*60))
-                console.log({segmentoActual})
+                let horaActualActivacion = new Date() 
+                console.log({horaActualActivacion})
+                let segmentoDeJuego = (horaActualActivacion - horaDeArranqueActivacion) / 1000
+                console.log({segmentoDeJuego})
+
+                if(segmentoDeJuego >= 0){ 
+                    let duracionSegmento = numHorasServicio / numPremios
+                    console.log({duracionSegmento})
                 
-                if(segmentoActual >=///KIA///ID///000026
-                 numPremios ){
-                    console.log("no hay premio ya nos pasamos segmentoActual > numPremios")
-                    return false
-                }else{
-                    let ganadoresDeSegmentoAnterior = false
-                    let ganadoresDeSegmentoActual = false
-
-                    if(segmentoActual == 0){
-                        ganadoresDeSegmentoActual = arrayGanadores[segmentoActual]
-                        ganadoresDeSegmentoAnterior = "true"
+                    //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
+                    let segmentoActual =Math.floor((segmentoDeJuego) / (duracionSegmento*60))
+                    console.log({segmentoActual})
+                    
+                    if(segmentoActual >=///KIA///ID///000026
+                    numPremios ){
+                        console.log("no hay premio ya nos pasamos segmentoActual > numPremios")
+                        return false
                     }else{
-                        ganadoresDeSegmentoActual = arrayGanadores[segmentoActual] 
-                        ganadoresDeSegmentoAnterior = arrayGanadores[segmentoActual-1]
-                    }
+                        let ganadoresDeSegmentoAnterior = false
+                        let ganadoresDeSegmentoActual = false
 
-                    if(ganadoresDeSegmentoAnterior=="false"){
-                        console.log("SI hay premio, ganadoresDeSegmentoAnterior==0")
-                        arrayGanadores[segmentoActual-1] = "true"
-                        setCookie("arrayGanadores", arrayGanadores.toString(), 10)
-                        return true
-                    }else{
-                        if(ganadoresDeSegmentoActual=="true"){
-                            console.log("NO hay premio, ganadoresDeSegmentoActual==1")
-                            return false
+                        if(segmentoActual == 0){
+                            ganadoresDeSegmentoActual = arrayGanadores[segmentoActual]
+                            ganadoresDeSegmentoAnterior = "true"
                         }else{
-                            let segundoActualDentroDeSegmento =  (segmentoDeJuego) % (duracionSegmento*60)
-                            console.log({segundoActualDentroDeSegmento})
-                            console.log("comparamos contra: "+ arrayGanadoresRandom[segmentoActual])
-                            console.log("todos los aleatorios: " + arrayGanadoresRandom.toString())
-                            if(segundoActualDentroDeSegmento >= arrayGanadoresRandom[segmentoActual]){
-                                console.log("SI hay premio, segmentoDeJuego >= arrayGanadoresRandom[segmentoActual]")
-                                arrayGanadores[segmentoActual] = "true"
-                                setCookie("arrayGanadores", arrayGanadores.toString(), 10)
-                                return true
-                            }else{
-                                console.log("NO hay premio, estamos en semento correcto pero todavia el aleatorio no nos toca")
+                            ganadoresDeSegmentoActual = arrayGanadores[segmentoActual] 
+                            ganadoresDeSegmentoAnterior = arrayGanadores[segmentoActual-1]
+                        }
+
+                        if(ganadoresDeSegmentoAnterior=="false"){
+                            console.log("SI hay premio, ganadoresDeSegmentoAnterior==0")
+                            arrayGanadores[segmentoActual-1] = "true"
+                            setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                            return true
+                        }else{
+                            if(ganadoresDeSegmentoActual=="true"){
+                                console.log("NO hay premio, ganadoresDeSegmentoActual==1")
                                 return false
+                            }else{
+                                let segundoActualDentroDeSegmento =  (segmentoDeJuego) % (duracionSegmento*60)
+                                console.log({segundoActualDentroDeSegmento})
+                                console.log("comparamos contra: "+ arrayGanadoresRandom[segmentoActual])
+                                console.log("todos los aleatorios: " + arrayGanadoresRandom.toString())
+                                if(segundoActualDentroDeSegmento >= arrayGanadoresRandom[segmentoActual]){
+                                    console.log("SI hay premio, segmentoDeJuego >= arrayGanadoresRandom[segmentoActual]")
+                                    arrayGanadores[segmentoActual] = "true"
+                                    setCookie("arrayGanadores", arrayGanadores.toString(), 10)
+                                    return true
+                                }else{
+                                    console.log("NO hay premio, estamos en semento correcto pero todavia el aleatorio no nos toca")
+                                    return false
+                                }
                             }
                         }
                     }
+                }else{
+                    console.log("SI hay premio, estamos en pruebas antes del arranque")            
+                    return true
                 }
-            }else{
-                console.log("SI hay premio, estamos en pruebas antes del arranque")            
-                return true
             }
-            
         }
 
         async function listenToPort() {

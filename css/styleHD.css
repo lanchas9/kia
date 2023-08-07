@@ -96,6 +96,19 @@ body{
         border-radius: 10px;
     }
 
+    
+    .botonVerde{
+        background-color: green;
+        color: white;
+        font-family: "KiaSignatureFixBold";
+        width: 63.5%;
+        font-size: x-large;
+        margin-top: 1%;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-radius: 10px;
+    }
+
     .checkboxIcon{
         width: 20px;
         height: 20px;
@@ -157,6 +170,19 @@ body{
     .cuerpo2{
         text-align: center;
         margin-top: 100px;
+        width: 100%;
+        margin-left: 0%;
+    }
+
+    .cuerpo3{
+        text-align: center;
+        margin-top: 100px;
+        width: 100%;
+        margin-left: 0%;
+    }
+
+    .cuerpo4{
+        text-align: center;
         width: 100%;
         margin-left: 0%;
     }

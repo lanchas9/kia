@@ -20,10 +20,18 @@
         <h2>Premios Entregados: <b id="premiosEntregados">0</b></h2>
     </div>
     <div class="margen">
-        <div class="cuerpo2">
+        <div class="cuerpo3" id="cuerpo1">
+            <h1>Método de entrega de premios</h1>
+            
+            <button class="boton" onclick="validaMetodoEntregaPremios1()" id="validaMetodoEntregaPremios1">Ganador 1 de cada 5</button>
+            <div class="titulo">Numero de intentos para ganar:<br> <input type="number" class="inputDatos" id="numIntentos" placeholder="numIntentos"></div>
+            
+            <button class="boton" onclick="validaMetodoEntregaPremios2()" id="validaMetodoEntregaPremios2">Ganador por tiempo y numero de premios</button>
             <div class="titulo">Numero de premios totales a entregar hoy:<br> <input type="number" class="inputDatos" id="numPremios" placeholder="numPremios"></div>
             <div class="titulo">Duracion en minutos de la activación: <br><input type="number" class="inputDatos" id="numHorasServicio" placeholder="numHorasServicio"></div>
             <div class="titulo">Horario de arranque: <br><input type="time" class="inputDatos" id="horaArranque" placeholder=""></div>
+        </div>
+        <div class="cuerpo4" id="cuerpo2">
             <div class="titulo">Numero de carriles habilitados: <br><input type="number" class="inputDatos" id="numCarriles" placeholder="numCarriles"></div>
             <div id="carriles">
             </div>
@@ -33,6 +41,19 @@
     </div>
     <script type="text/javascript">
         let serverLibre = true;
+        let metodoEntregaPremios = 0
+
+        function validaMetodoEntregaPremios1(){
+            metodoEntregaPremios  = 1
+            document.getElementById("validaMetodoEntregaPremios1").className = "botonVerde"
+            document.getElementById("validaMetodoEntregaPremios2").className = "boton"
+        }
+
+        function validaMetodoEntregaPremios2(){
+            metodoEntregaPremios = 2
+            document.getElementById("validaMetodoEntregaPremios1").className = "boton"
+            document.getElementById("validaMetodoEntregaPremios2").className = "botonVerde"
+        }
 
         function seleccionaNumeroCarriles(){
             let numCarriles = parseInt(document.getElementById("numCarriles").value)
@@ -58,15 +79,25 @@
             numCarrilesInput.addEventListener('input', () => {
                 seleccionaNumeroCarriles();    
             });
+            metodoEntregaPremios = parseInt(getCookie("metodoEntregaPremios"));
+            if(metodoEntregaPremios==1){
+                validaMetodoEntregaPremios1()
+            }else if(metodoEntregaPremios==2){
+                validaMetodoEntregaPremios2()
+            }
 
             document.getElementById("numCarriles").value = getCookie("numCarriles");
             seleccionaNumeroCarriles();
             document.getElementById("horaArranque").value = getCookie("horaArranque");
             document.getElementById("numHorasServicio").value = getCookie("numHorasServicio");
             document.getElementById("numPremios").value = getCookie("numPremios");             
+            document.getElementById("numIntentos").value = getCookie("numIntentos"); 
+            
             let premiosEntregados = getCookie("arrayGanadores").split(',');
             let temp = premiosEntregados.filter(item => item=="true")
             document.getElementById("premiosEntregados").innerHTML = temp.length
+
+            document.getElementById("premiosEntregados").innerHTML = getCookie("numGanadores");
 
         }
 
@@ -77,6 +108,7 @@
             
                 document.getElementById("mensajeError").innerHTML = ""
                 let numPremios = parseInt(document.getElementById("numPremios").value);
+                let numIntentos = parseInt(document.getElementById("numIntentos").value);
                 let numHorasServicio = parseInt(document.getElementById("numHorasServicio").value);
                 let horaArranque = document.getElementById("horaArranque").value;
                 let numCarriles = parseInt(document.getElementById("numCarriles").value);
@@ -132,9 +164,29 @@
                     mensaje = "Número de premios es incorrecto"
                 }
 
+                if(!isNumeric(""+numIntentos)){
+                    valido = false
+                    mensaje = "Número de Intentos para encontrar ganador es incorrecto"
+                }
+
                 if (numPremios <= 0) {
                     valido = false
-                    mensaje = "Número de premios es incorrecto"
+                    mensaje = "Número de premios es menor a cero"
+                }
+
+                if (numIntentos <= 0) {
+                    valido = false
+                    mensaje = "Número de numIntentos para encontrar ganador es menor a cero"
+                }
+
+                if(!isNumeric(""+metodoEntregaPremios)){
+                    valido = false
+                    mensaje = "Seleccionar método de entrega de premios"
+                }
+
+                if (metodoEntregaPremios == 0) {
+                    valido = false
+                    mensaje = "Seleccionar método de entrega de premios"
                 }
 
                 if(valido){
@@ -166,7 +218,10 @@
                     if(getCookie("numPremios") != numPremios){
                         hayCambios = true
                     }
-
+                    if(getCookie("numIntentos") != numIntentos){
+                        hayCambios = true
+                    }
+                    
                     if(hayCambios){
                         //recalculamos premios
                         let arrayGanadoresRandom = []
@@ -182,10 +237,14 @@
                         setCookie("horaArranque", horaArranque, 10);
                         setCookie("numHorasServicio", numHorasServicio, 10);
                         setCookie("numPremios", numPremios, 10);
+                        setCookie("numIntentos", numIntentos, 10);
+                        setCookie("metodoEntregaPremios", metodoEntregaPremios, 10);
                     }else{
                         setCookie("horaArranque", horaArranque, 10);
                         setCookie("numHorasServicio", numHorasServicio, 10);
                         setCookie("numPremios", numPremios, 10);
+                        setCookie("numIntentos", numIntentos, 10);
+                        setCookie("metodoEntregaPremios", metodoEntregaPremios, 10);
                     }
                     window.location.href = `kia.html`;
                 }else{
