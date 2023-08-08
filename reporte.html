@@ -21,6 +21,30 @@
     </div>
     <div class="cuerpo centrado">
         <div class="titulo"><B>REPORTE REGISTROS DIARIOS KIA</B></div>
+        <h1>Semana 2</h1>
+        <a href="" onclick="detalle()" class="liga" id="liga4">
+            <div class="titulo">10 DE AGOSTO 2023:</div><span id="dia4" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga5">
+            <div class="titulo">11 DE AGOSTO 2023:</div><span id="dia5" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga6">
+            <div class="titulo">12 DE AGOSTO 2023:</div><span id="dia6" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga7">
+            <div class="titulo">13 DE AGOSTO 2023:</div><span id="dia7" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="reporteCompletoSemana2.html"  class="liga">
+            <div class="titulo">Reporte Completo 4 días AGOSTO</div>
+            <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
+        </a>
+        <br><br>
+        <hr class="linea">
+        <h1>Semana 1</h1>
         <a href="" onclick="detalle()" class="liga" id="liga1">
             <div class="titulo">26 DE MAYO 2023:</div><span id="dia1" class="contador"> 0 personas</span>
         </a>
@@ -33,10 +57,10 @@
             <div class="titulo">28 DE MAYO 2023:</div><span id="dia3" class="contador"> 0 personas</span>
         </a>
         <br>
-        <button class="boton" onclick="cargaDatos()">Recargar Datos</button>
+        <!-- <button class="boton" onclick="cargaDatos()">Recargar Datos</button> -->
         <br><br><br><br>
-        <a href="reporteCompleto.html"  class="liga" id="liga3">
-            <div class="titulo">Reporte Completo 3 días</div>
+        <a href="reporteCompletoSemana1.html"  class="liga">
+            <div class="titulo">Reporte Completo 3 días MAYO</div>
             <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
         </a>
         <br><br>
@@ -57,23 +81,43 @@
             };
                 
             try {
-                const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/dameReportePorDia`, settings);
-                const data = await fetchResponse.json();
-                let resul = data.statusCode
+                const fetchResponse1 = await fetch(`https://mosaico.app:4000/Kia/semana1/dameReportePorDia`, settings);
+                const data1 = await fetchResponse1.json();
+                let resul1 = data1.statusCode
+
+                const fetchResponse2 = await fetch(`https://mosaico.app:4000/Kia/semana2/dameReportePorDia`, settings);
+                const data2 = await fetchResponse2.json();
+                let resul2 = data2.statusCode
                 /* let resul = 200; */
-                if(resul == 200){
+                if((resul1 == 200)&& (resul2 == 200)){
                     console.log("Datos del reporte correctos")
-                    let dia1 = data.message[0].numRegistros
+                    let dia1 = data1.message[0].numRegistros
                     document.getElementById("dia1").innerHTML = dia1 + " personas"
-                    document.getElementById("liga1").href = "reporteDetalle.html?diaEspecifico=" + data.message[0].fechaRegistro 
+                    document.getElementById("liga1").href = "reporteDetalle.html?diaEspecifico=" + data1.message[0].fechaRegistro 
 
-                    let dia2 = data.message[1].numRegistros
+                    let dia2 = data1.message[1].numRegistros
                     document.getElementById("dia2").innerHTML = dia2 + " personas"
-                    document.getElementById("liga2").href = "reporteDetalle.html?diaEspecifico=" + data.message[1].fechaRegistro
+                    document.getElementById("liga2").href = "reporteDetalle.html?diaEspecifico=" + data1.message[1].fechaRegistro
 
-                    let dia3 = data.message[2].numRegistros
+                    let dia3 = data1.message[2].numRegistros
                     document.getElementById("dia3").innerHTML = dia3 + " personas"   
-                    document.getElementById("liga3").href = "reporteDetalle.html?diaEspecifico=" + data.message[2].fechaRegistro
+                    document.getElementById("liga3").href = "reporteDetalle.html?diaEspecifico=" + data1.message[2].fechaRegistro
+                
+                    let dia4 = data2.message[0].numRegistros
+                    document.getElementById("dia4").innerHTML = dia4 + " personas"   
+                    document.getElementById("liga4").href = "reporteDetalle.html?diaEspecifico=" + data2.message[0].fechaRegistro
+                
+                    let dia5 = data2.message[1].numRegistros
+                    document.getElementById("dia5").innerHTML = dia5 + " personas"   
+                    document.getElementById("liga5").href = "reporteDetalle.html?diaEspecifico=" + data2.message[1].fechaRegistro
+                
+                    let dia6 = data.message[2].numRegistros
+                    document.getElementById("dia6").innerHTML = dia6 + " personas"   
+                    document.getElementById("liga6").href = "reporteDetalle.html?diaEspecifico=" + data.message[2].fechaRegistro
+                
+                    let dia7 = data2.message[3].numRegistros
+                    document.getElementById("dia7").innerHTML = dia7 + " personas"   
+                    document.getElementById("liga7").href = "reporteDetalle.html?diaEspecifico=" + data2.message[3].fechaRegistro
                 }else{
                     console.log("Error: " + data.message);  
                 }
