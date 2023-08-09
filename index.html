@@ -245,6 +245,11 @@
                 let valido = true
                 let mensaje = ""
 
+                if (!checkbox1) {
+                    valido = false
+                    mensaje = "No se ha marcado la casilla sobre envío de información"
+                }
+
                 if (!checkbox2) {
                     valido = false
                     mensaje = "No se ha aceptado la politica de privacidad"
