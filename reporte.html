@@ -93,31 +93,31 @@
                     console.log("Datos del reporte correctos")
                     let dia1 = data1.message[0].numRegistros
                     document.getElementById("dia1").innerHTML = dia1 + " personas"
-                    document.getElementById("liga1").href = "reporteDetalle.html?diaEspecifico=" + data1.message[0].fechaRegistro 
+                    document.getElementById("liga1").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[0].fechaRegistro 
 
                     let dia2 = data1.message[1].numRegistros
                     document.getElementById("dia2").innerHTML = dia2 + " personas"
-                    document.getElementById("liga2").href = "reporteDetalle.html?diaEspecifico=" + data1.message[1].fechaRegistro
+                    document.getElementById("liga2").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[1].fechaRegistro
 
                     let dia3 = data1.message[2].numRegistros
                     document.getElementById("dia3").innerHTML = dia3 + " personas"   
-                    document.getElementById("liga3").href = "reporteDetalle.html?diaEspecifico=" + data1.message[2].fechaRegistro
+                    document.getElementById("liga3").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[2].fechaRegistro
                 
                     let dia4 = data2.message[0].numRegistros
                     document.getElementById("dia4").innerHTML = dia4 + " personas"   
-                    document.getElementById("liga4").href = "reporteDetalle.html?diaEspecifico=" + data2.message[0].fechaRegistro
+                    document.getElementById("liga4").href = "reporteDetalleSemana2.html?diaEspecifico=" + data2.message[0].fechaRegistro
                 
                     let dia5 = data2.message[1].numRegistros
                     document.getElementById("dia5").innerHTML = dia5 + " personas"   
-                    document.getElementById("liga5").href = "reporteDetalle.html?diaEspecifico=" + data2.message[1].fechaRegistro
+                    document.getElementById("liga5").href = "reporteDetalleSemana2.html?diaEspecifico=" + data2.message[1].fechaRegistro
                 
                     let dia6 = data.message[2].numRegistros
                     document.getElementById("dia6").innerHTML = dia6 + " personas"   
-                    document.getElementById("liga6").href = "reporteDetalle.html?diaEspecifico=" + data.message[2].fechaRegistro
+                    document.getElementById("liga6").href = "reporteDetalleSemana2.html?diaEspecifico=" + data.message[2].fechaRegistro
                 
                     let dia7 = data2.message[3].numRegistros
                     document.getElementById("dia7").innerHTML = dia7 + " personas"   
-                    document.getElementById("liga7").href = "reporteDetalle.html?diaEspecifico=" + data2.message[3].fechaRegistro
+                    document.getElementById("liga7").href = "reporteDetalleSemana2.html?diaEspecifico=" + data2.message[3].fechaRegistro
                 }else{
                     console.log("Error: " + data.message);  
                 }
