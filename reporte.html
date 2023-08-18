@@ -68,7 +68,7 @@
         </a>
         <br>
         <!-- <button class="boton" onclick="cargaDatos()">Recargar Datos</button> -->
-        <br><br><br><br>
+        <br><br>
         <a href="reporteCompletoSemana1.html"  class="liga">
             <div class="titulo">Reporte Completo 3 días MAYO</div>
             <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
@@ -98,9 +98,17 @@
                 const fetchResponse2 = await fetch(`https://mosaico.app:4000/Kia/semana2/dameReportePorDia`, settings);
                 const data2 = await fetchResponse2.json();
                 let resul2 = data2.statusCode
+
+                const fetchResponse3 = await fetch(`https://mosaico.app:4000/Kia/semana3/dameReportePorDia`, settings);
+                const data3 = await fetchResponse3.json();
+                let resul3 = data3.statusCode
                 /* let resul = 200; */
-                if((resul1 == 200)&& (resul2 == 200)){
+                if((resul1 == 200) && (resul2 == 200) && (resul3 == 200)){
                     console.log("Datos del reporte correctos")
+                    let dia8 = data3.message[0].numRegistros
+                    document.getElementById("dia8").innerHTML = dia8 + " personas"
+                    document.getElementById("liga8").href = "reporteDetalleSemana3.html?diaEspecifico=" + data3.message[0].fechaRegistro 
+
                     let dia1 = data1.message[0].numRegistros
                     document.getElementById("dia1").innerHTML = dia1 + " personas"
                     document.getElementById("liga1").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[0].fechaRegistro 
