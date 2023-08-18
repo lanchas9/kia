@@ -245,6 +245,11 @@
                 let valido = true
                 let mensaje = ""
 
+                // if (!checkbox1) {
+                //     valido = false
+                //     mensaje = "No se ha marcado la casilla sobre envío de información"
+                // }
+
                 if (!checkbox2) {
                     valido = false
                     mensaje = "No se ha aceptado la politica de privacidad"
@@ -344,7 +349,7 @@
                     dataJson
                  };
                 try {
-                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/guardaUsuario`, settings);
+                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana2/guardaUsuario`, settings);
                     const data = await fetchResponse.json();
                     console.log("Data" + JSON.stringify(data))
                     
