@@ -23,7 +23,7 @@
         <div class="cuerpo3" id="cuerpo1">
             <h1>Método de entrega de premios</h1>
             
-            <button class="boton" onclick="validaMetodoEntregaPremios1()" id="validaMetodoEntregaPremios1">Ganador 1 de cada 5</button>
+            <button class="boton" onclick="validaMetodoEntregaPremios1()" id="validaMetodoEntregaPremios1">Ganador 1 de cada: </button>
             <div class="titulo">Numero de intentos para ganar:<br> <input type="number" class="inputDatos" id="numIntentos" placeholder="numIntentos"></div>
             
             <button class="boton" onclick="validaMetodoEntregaPremios2()" id="validaMetodoEntregaPremios2">Ganador por tiempo y numero de premios</button>
@@ -69,7 +69,7 @@
                     carriles.innerHTML = carriles.innerHTML + `<div class="titulo">Carril ${index}: <br> <input type="number" class="inputDatos" id="capacidadCarril${index}" placeholder="capacidadCarril${index}"></div>` 
                 }
                 for (let index = 1; index <= numCarriles; index++) {
-                    document.getElementById(`capacidadCarril${index}`).value = parseInt(getCookie(`capacidadCarril${index}`));
+                    document.getElementById(`capacidadCarril${index}`).value = parseInt(getCookie(`capacidadMaximaCarril${index}`));
                 }       
             }
         }
@@ -175,7 +175,8 @@
                 }
 
                 if (numIntentos <= 0) {
-                    valido = false
+                    valid
+                    o = false
                     mensaje = "Número de numIntentos para encontrar ganador es menor a cero"
                 }
 

@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Vending",
-            "url": "http://localhost/kia.html",
+            "url": "http://localhost/configuracion.html",
             "webRoot": "${workspaceFolder}"
         },
         {

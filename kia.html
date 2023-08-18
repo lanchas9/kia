@@ -103,7 +103,8 @@
             //Leer desde Cookie los valores persistentes
             metodoEntregaPremios = parseInt(getCookie("metodoEntregaPremios"));
             numPremios = parseInt(getCookie("numPremios"))
-            numGanadores = parseInt(getCookie("numPremios"))
+            numGanadores = parseInt(getCookie("numGanadores"))
+            numIntentos = parseInt(getCookie("numIntentos"))
 
             numHorasServicio = parseInt(getCookie("numHorasServicio"))
             horaArranque = getCookie("horaArranque")
@@ -408,10 +409,12 @@
                     strInput = ''
                     idInvitado = paste
                     tenemosQR(idInvitado)
-                }else if(strLlenado.toUpperCase() == "///LLENADO"){
+                }else if(strLlenado.toUpperCase() == simboloQR + "LLENADO"){
                     idInvitado = paste
                     tenemosQR(idInvitado)      
-                }else if(strLlenado.toUpperCase() == "///RESET_GANADORES"){
+                }else if(instruccion == "STATUS"){
+                    dameStatus()
+                }else if(strLlenado.toUpperCase() == simboloQR + "RESETGANADORES"){
                     numGanadores = 0
                     setCookie("numGanadores", numGanadores, 10);      
                 }
@@ -425,17 +428,40 @@
         // let numCarriles = 6
         // let numPremiosXcarril = 6
 
+        let simboloQR = "///"
+        // let simboloQR = "---"
+
+        function dameStatus(){
+            let str = 
+            `
+            # de Códigos QR leídos: ${numLectura}
+            # de ganadores: ${numGanadores}
+            Carril 1: ${inventarioPremios.carril01}
+            Carril 2: ${inventarioPremios.carril02}
+            Carril 3: ${inventarioPremios.carril03}
+            Carril 4: ${inventarioPremios.carril04}
+            Carril 5: ${inventarioPremios.carril05}
+            Carril 6: ${inventarioPremios.carril06}
+            `;
+            alert(str)
+        }
+
         async function tenemosQR(idInvitado){
             //Aqui verficiamos el segundo que es desde la hora de inciio y validamos en array
             console.log({idInvitado})
 
             //Vamos a ver si es intruccion de llenado de vending
-            if(idInvitado.includes("///")){
-                let instruccion = idInvitado.split("///")[1]
+            if(idInvitado.includes(simboloQR)){
+                let instruccion = idInvitado.split(simboloQR)[1]
                 instruccion = instruccion.toUpperCase()
-                if(instruccion == "RESET_GANADORES"){
+                if(instruccion == "RESETGANADORES"){
+                    numLectura = 0
+                    setCookie("numLectura", numLectura, 10);
                     numGanadores = 0
                     setCookie("numGanadores", numGanadores, 10);
+                    dameStatus()
+                }else if(instruccion == "STATUS"){
+                    dameStatus()
                 }else if(instruccion == "LLENADO"){
                     console.log("entramos llenado")
                     inventarioPremios.carril01 = parseInt(getCookie("capacidadMaximaCarril1"))
@@ -451,10 +477,10 @@
                     setCookie("capacidadCarril4", inventarioPremios.carril04, 10);
                     setCookie("capacidadCarril5", inventarioPremios.carril05, 10);
                     setCookie("capacidadCarril6", inventarioPremios.carril06, 10);
-                
+                    dameStatus()
                 }else if(instruccion == "KIA"){ //ID valido
                         // 
-                    let str = idInvitado.split("///")
+                    let str = idInvitado.split(simboloQR)
                     let strNombre = str[0]
                     let nombre = strNombre.substring(1,strNombre.length)
                     let marca = str[1]
@@ -480,7 +506,7 @@
                         const fetchResponse = await fetch(`http://localhost:4000/kia/guardaIdParticipante`, settings);
                         const data = await fetchResponse.json();
                         let resul = data.statusCode
-                        /* let resul = 200; */
+                        // let resul = 200; 
                         if(resul == 200){
                             console.log("Datos guardados correctamente")
                             primeraVez = true
@@ -492,20 +518,24 @@
                         console.log("Error:" + e);
                     }
                     //----------
-                    let horaDeArranqueActivacion = new Date()
-                    horaDeArranqueActivacion.setHours(parseInt(horaArranque.split(":")[0] ))
-                    horaDeArranqueActivacion.setMinutes(parseInt(horaArranque.split(":")[1]))
-                    horaDeArranqueActivacion.setSeconds(0)
+                    // let horaDeArranqueActivacion = new Date()
+                    // horaDeArranqueActivacion.setHours(parseInt(horaArranque.split(":")[0] ))
+                    // horaDeArranqueActivacion.setMinutes(parseInt(horaArranque.split(":")[1]))
+                    // horaDeArranqueActivacion.setSeconds(0)
 
-                    let horaActualActivacion = new Date() 
-                    console.log({horaActualActivacion})
-                    let segmentoDeJuego = (horaActualActivacion - horaDeArranqueActivacion) / 1000
-                    console.log({segmentoDeJuego})
+                    // let horaActualActivacion = new Date() 
+                    // console.log({horaActualActivacion})
+                    // let segmentoDeJuego = (horaActualActivacion - horaDeArranqueActivacion) / 1000
+                    // console.log({segmentoDeJuego})
 
-                    if(segmentoDeJuego < 0){
-                        primeraVez = true 
-                    }
+                    // if(segmentoDeJuego < 0){
+                    //     primeraVez = true 
+                    // }
                     
+                    // if (metodoEntregaPremios==1){
+                    //     primeraVez = true
+                    // }
+
                     //--------------        
                     if(primeraVez){
                         document.getElementById("imagen").src = "jpg/2.jpg"
@@ -570,7 +600,7 @@
         }
 
         function evaluamosSiGana(){
-            numIntentos++
+            numLectura++
             if(metodoEntregaPremios == 1){
                 let resul = numLectura % numIntentos
                 if(resul == 1){
