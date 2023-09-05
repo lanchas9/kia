@@ -7,7 +7,7 @@
     <title>Registro</title>
 </head>
 <body onload="cargaDatos()">
-    <h1>Links para WhatsApp</h1>
+    <!-- <h1>Links para WhatsApp</h1>
 
     <a href="http://" id="link1">
         <h2>Link 1</h2>
@@ -16,7 +16,7 @@
     <br><br><br><br>
     <a href="http://" id="link2">
         <h2>Link 2</h2>
-    </a>
+    </a> -->
     <script>
        async function cargaDatos(){
             const queryString = window.location.search;
@@ -26,12 +26,13 @@
             let urlApi1 = "https://api.whatsapp.com/send?phone=52"
             let urlApi2 = "https://api.whatsapp.com/send?phone=521"
 
-            let strTexto = `Hola, Buen día *${nombre}*. Te estamos contactando de *Kia Motors México*. Recientemente estuvimos contigo en *SIX FLAGS México* regalando premios con nuestra Ruleta Digital. Tenemos muchas más sorpresas preparadas para ti, para poder avanzar a la siguiente etapa nos puedes compartir tu correo electrónico por favor.`
+            let strTexto = `Hola, Buen día *${nombre}*. Te estamos contactando de *Kia México*. Recientemente estuvimos contigo en *SIX FLAGS México* regalando premios con nuestra Ruleta Digital. Tenemos muchas más sorpresas preparadas para ti, para poder avanzar a la siguiente etapa nos puedes compartir tu correo electrónico por favor.`
             let strFinal1 = urlApi1 + id + "&Text=" + encodeURI(strTexto) 
             let strFinal2 = urlApi2 + id + "&Text=" + encodeURI(strTexto) 
+            window.location = strFinal1
 
-            document.getElementById("link1").href = strFinal1
-            document.getElementById("link2").href = strFinal2
+            // document.getElementById("link1").href = strFinal1
+            // document.getElementById("link2").href = strFinal2
         }
 
     </script>
