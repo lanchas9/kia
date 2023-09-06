@@ -25,6 +25,7 @@
         <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*">
         <input type="text" class="inputDatos" id="ApellidoPaterno" placeholder="Apellido Paterno*">
         <input type="text" class="inputDatos" id="correoElectronico" placeholder="Correo Electrónico*">
+        <input type="text" class="inputDatos" id="correoConfirmacion" placeholder="Confirmación de Correo*">
         <input type="number" class="inputDatos" id="Telefono" placeholder="Teléfono*">
         <input type="number" class="inputDatos" id="CodigoPostal" placeholder="Código Postal*">
         <select name="seleccioneEstado" id="SeleccioneEstado" class="inputDatosSelect" onchange="llenaDistribuidor()">
@@ -234,6 +235,7 @@
                 let nombre = new String(document.getElementById("Nombre").value);
                 let apellido = new String(document.getElementById("ApellidoPaterno").value);
                 let correoElectronico = new String(document.getElementById("correoElectronico").value);
+                let correoConfirmacion = new String(document.getElementById("correoConfirmacion").value);
                 let telefono = new String(document.getElementById("Telefono").value);
                 let codigoPostal = new String(document.getElementById("CodigoPostal").value);
                 let seleccioneEstado = document.getElementById("SeleccioneEstado").value;
@@ -284,10 +286,19 @@
                 }
 
                 correoElectronico = correoElectronico.trim()
+                correoConfirmacion = correoConfirmacion.trim()
+                if(correoElectronico !== correoConfirmacion){
+                    valido = false
+                    mensaje = "correo electrónico confirmado no coinciden"
+                }
+
+                
                 if(mailInValido(correoElectronico)){
                     valido = false
                     mensaje = "correo electrónico no válido"
                 }
+
+                
 
                 if (apellido.length<= 2) {
                     valido = false
