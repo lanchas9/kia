@@ -24,6 +24,7 @@
         
         <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*">
         <input type="text" class="inputDatos" id="ApellidoPaterno" placeholder="Apellido Paterno*">
+        <input type="text" class="inputDatos" id="correoElectronico" placeholder="Correo Electrónico*">
         <input type="number" class="inputDatos" id="Telefono" placeholder="Teléfono*">
         <input type="number" class="inputDatos" id="CodigoPostal" placeholder="Código Postal*">
         <select name="seleccioneEstado" id="SeleccioneEstado" class="inputDatosSelect" onchange="llenaDistribuidor()">
@@ -232,6 +233,7 @@
                 document.getElementById("mensajeError").innerHTML = ""
                 let nombre = new String(document.getElementById("Nombre").value);
                 let apellido = new String(document.getElementById("ApellidoPaterno").value);
+                let correoElectronico = new String(document.getElementById("correoElectronico").value);
                 let telefono = new String(document.getElementById("Telefono").value);
                 let codigoPostal = new String(document.getElementById("CodigoPostal").value);
                 let seleccioneEstado = document.getElementById("SeleccioneEstado").value;
@@ -281,6 +283,12 @@
                     mensaje = "Telefono no es de 10 dígitos"
                 }
 
+                correoElectronico = correoElectronico.trim()
+                if(mailInValido(correoElectronico)){
+                    valido = false
+                    mensaje = "correo electrónico no válido"
+                }
+
                 if (apellido.length<= 2) {
                     valido = false
                     mensaje = "Apellido demasiado corto"
@@ -306,7 +314,7 @@
                 if(valido){
                     let deseaInfo = checkbox1 == true ? 1:0
                     let aceptoPoliticas = checkbox2 == true ? 1:0
-                    let resul = await guardaDatos( nombre ,apellido ,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
+                    let resul = await guardaDatos( nombre ,apellido,correoElectronico, telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
                     if (resul.statusCode ==200){
                         window.location.href = `resultado.html?nombre=${nombre + ' ' + apellido}&id=${resul.message}`;
                     }else{
@@ -320,7 +328,7 @@
             }
         }
         
-        async function guardaDatos(nombre ,apellido ,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas){
+        async function guardaDatos(nombre ,apellido ,correoElectronico,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas){
             let resul = {
                 error : true,
                 message: "",
@@ -330,6 +338,7 @@
             const data = {
                     "nombre" : nombre,
                     "apellido" : apellido,
+                    "correoElectronico" : correoElectronico,
                     "telefono" : telefono,
                     "codigoPostal" : codigoPostal,
                     "seleccioneEstado" : seleccioneEstado,
@@ -349,7 +358,7 @@
                     dataJson
                  };
                 try {
-                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana3/guardaUsuario`, settings);
+                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana4/guardaUsuario`, settings);
                     const data = await fetchResponse.json();
                     console.log("Data" + JSON.stringify(data))
                     
