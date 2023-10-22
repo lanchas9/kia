@@ -31,11 +31,11 @@
         <div class="titulo"><B>REPORTE REGISTROS DIARIOS KIA</B></div>
             <div class="titulo">
                 <b id="titulo" class="titu"></b> - 
-                <span id="contador" class="contador"> 0 personas</span>
+                <span id="contador" class="cont ador"> 0 personas</span>
             </div>
             <div id="chart"></div>
-        <br><br>
-        <span class="titulo">Reporte Resumen solo nombre, Estado y Hora registro</span>
+        <br>
+        <span class="titulo">Descarga Reporte Completo</span>
         <img id="download-xlsx" class="imagenLogo center" src="jpg/excel.png" alt="" srcset="">
         <br><br>
         <div id="example-table"></div>
@@ -52,7 +52,7 @@
         let tituloReporte = urlParams.get('titulo')
         
     async function fetchReportJSON() {
-        const response = await fetch('https://mosaico.app:4000/Kia/temporada1/' + "datosCompletosUsariosRegistrados?diaEspecifico=" + diaEspecifico);
+        const response = await fetch('https://mosaico.app:4000/Kia/semana3/' + "datosCompletosUsariosRegistradosTotales");
         const tabledata = await response.json();
         if (tabledata.statusCode == 200){
             if((reporte == 'reporteUsuariosRegistrados') || (reporte == 'reporteUsuariosRegistradosIncluidoDemo')){
@@ -186,20 +186,20 @@
             };
                 
             try {
-                const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/temporada1/graficaRegistrosPorHora?diaEspecifico=${diaEspecifico}`, settings);
+                const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana3/graficaRegistrosPorDia`, settings);
                 const tabledata = await fetchResponse.json();
                 let resul = tabledata.statusCode
                 /* let resul = 200; */
                 if(resul == 200){
-                    tituloReporte  = "Reporte de la fecha " + diaEspecifico
+                    tituloReporte  = "Reporte de la fecha " + "Agosto 19"
                     const etiqueta = dameTitulo(tituloReporte)
-                const labelsFromTable = tabledata.message.map(data => data.fechaRegistro + " " + data.horaRegistro )
+                const labelsFromTable = tabledata.message.map(data => data.horaMasDia )
                 const labels = labelsFromTable
                 // const labels = await dameLabels(labelsFromTable)
                 const dataManual = tabledata.message.map(data => data.Registrados)
 
                 var count = dataManual.reduce((suma, actual)=> suma+actual)
-                document.getElementById("titulo").innerHTML = etiqueta
+                // document.getElementById("titulo").innerHTML = etiqueta
                 const element = document.getElementById("contador");
                 element.innerHTML = 'Número de Registros: ' + count
 

@@ -52,7 +52,7 @@
         let tituloReporte = urlParams.get('titulo')
         
     async function fetchReportJSON() {
-        const response = await fetch('https://mosaico.app:4000/Kia/semana2/' + "datosCompletosUsariosRegistrados?diaEspecifico=" + diaEspecifico);
+        const response = await fetch('https://mosaico.app:4000/Kia/temporada2/' + "datosCompletosUsariosRegistrados?diaEspecifico=" + diaEspecifico);
         const tabledata = await response.json();
         if (tabledata.statusCode == 200){
             if((reporte == 'reporteUsuariosRegistrados') || (reporte == 'reporteUsuariosRegistradosIncluidoDemo')){
@@ -186,7 +186,7 @@
             };
                 
             try {
-                const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana2/graficaRegistrosPorHora?diaEspecifico=${diaEspecifico}`, settings);
+                const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/temporada2/graficaRegistrosPorHora?diaEspecifico=${diaEspecifico}`, settings);
                 const tabledata = await fetchResponse.json();
                 let resul = tabledata.statusCode
                 /* let resul = 200; */

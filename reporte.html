@@ -21,7 +21,7 @@
     </div>
     <div class="cuerpo centrado">
         <div class="titulo"><B>REPORTE REGISTROS DIARIOS KIA</B></div>
-        <h1>Semana 2</h1>
+        <h1>Temporada 2</h1>
         <a href="" onclick="detalle()" class="liga" id="liga4">
             <div class="titulo">10 DE AGOSTO 2023:</div><span id="dia4" class="contador"> 0 personas</span>
         </a>
@@ -38,13 +38,17 @@
             <div class="titulo">13 DE AGOSTO 2023:</div><span id="dia7" class="contador"> 0 personas</span>
         </a>
         <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga8">
+            <div class="titulo">19 DE AGOSTO 2023:</div><span id="dia8" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
         <a href="reporteCompletoSemana2.html"  class="liga">
-            <div class="titulo">Reporte Completo 4 días AGOSTO</div>
+            <div class="titulo">Reporte Completo 5 días AGOSTO</div>
             <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
         </a>
         <br><br>
         <hr class="linea">
-        <h1>Semana 1</h1>
+        <h1>Temporada 1</h1>
         <a href="" onclick="detalle()" class="liga" id="liga1">
             <div class="titulo">26 DE MAYO 2023:</div><span id="dia1" class="contador"> 0 personas</span>
         </a>
@@ -58,7 +62,7 @@
         </a>
         <br>
         <!-- <button class="boton" onclick="cargaDatos()">Recargar Datos</button> -->
-        <br><br><br><br>
+        <br><br>
         <a href="reporteCompletoSemana1.html"  class="liga">
             <div class="titulo">Reporte Completo 3 días MAYO</div>
             <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
@@ -81,16 +85,18 @@
             };
                 
             try {
-                const fetchResponse1 = await fetch(`https://mosaico.app:4000/Kia/semana1/dameReportePorDia`, settings);
+                const fetchResponse1 = await fetch(`https://mosaico.app:4000/Kia/temporada1/dameReportePorDia`, settings);
                 const data1 = await fetchResponse1.json();
                 let resul1 = data1.statusCode
 
-                const fetchResponse2 = await fetch(`https://mosaico.app:4000/Kia/semana2/dameReportePorDia`, settings);
+                const fetchResponse2 = await fetch(`https://mosaico.app:4000/Kia/temporada2/dameReportePorDia`, settings);
                 const data2 = await fetchResponse2.json();
                 let resul2 = data2.statusCode
+
                 /* let resul = 200; */
-                if((resul1 == 200)&& (resul2 == 200)){
+                if((resul1 == 200) && (resul2 == 200)){
                     console.log("Datos del reporte correctos")
+
                     let dia1 = data1.message[0].numRegistros
                     document.getElementById("dia1").innerHTML = dia1 + " personas"
                     document.getElementById("liga1").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[0].fechaRegistro 
@@ -118,6 +124,11 @@
                     let dia7 = data2.message[3].numRegistros
                     document.getElementById("dia7").innerHTML = dia7 + " personas"   
                     document.getElementById("liga7").href = "reporteDetalleSemana2.html?diaEspecifico=" + data2.message[3].fechaRegistro
+
+                    let dia8 = data2.message[4].numRegistros
+                    document.getElementById("dia8").innerHTML = dia8 + " personas"
+                    document.getElementById("liga8").href = "reporteDetalleSemana3.html?diaEspecifico=" + data2.message[4].fechaRegistro 
+
                 }else{
                     console.log("Error: " + data.message);  
                 }
