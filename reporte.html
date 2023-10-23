@@ -21,6 +21,29 @@
     </div>
     <div class="cuerpo centrado">
         <div class="titulo"><B>REPORTE REGISTROS DIARIOS KIA</B></div>
+        <h1>Temporada 3</h1>
+        <a href="" onclick="detalle()" class="liga" id="liga9">
+            <div class="titulo">26 DE OCTUBRE 2023:</div><span id="dia9" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga10">
+            <div class="titulo">27 DE OCTUBRE 2023:</div><span id="dia10" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga11">
+            <div class="titulo">28 DE OCTUBRE 2023:</div><span id="dia11" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="" onclick="detalle()" class="liga" id="liga12">
+            <div class="titulo">28 DE OCTUBRE 2023:</div><span id="dia12" class="contador"> 0 personas</span>
+        </a>
+        <br><br>
+        <a href="reporteCompletoSemana3.html"  class="liga">
+            <div class="titulo">Reporte Completo 4 días OCTUBRE</div>
+            <img id="" class="imagenLogo" src="jpg/reporte.png" alt="" srcset="">
+        </a>
+        <br><br>
+        <hr class="linea">
         <h1>Temporada 2</h1>
         <a href="" onclick="detalle()" class="liga" id="liga4">
             <div class="titulo">10 DE AGOSTO 2023:</div><span id="dia4" class="contador"> 0 personas</span>
@@ -93,8 +116,12 @@
                 const data2 = await fetchResponse2.json();
                 let resul2 = data2.statusCode
 
+                const fetchResponse3 = await fetch(`https://mosaico.app:4000/Kia/temporada3/dameReportePorDia`, settings);
+                const data3 = await fetchResponse3.json();
+                let resul3 = data3.statusCode
+
                 /* let resul = 200; */
-                if((resul1 == 200) && (resul2 == 200)){
+                if(resul1 == 200){
                     console.log("Datos del reporte correctos")
 
                     let dia1 = data1.message[0].numRegistros
@@ -108,7 +135,8 @@
                     let dia3 = data1.message[2].numRegistros
                     document.getElementById("dia3").innerHTML = dia3 + " personas"   
                     document.getElementById("liga3").href = "reporteDetalleSemana1.html?diaEspecifico=" + data1.message[2].fechaRegistro
-                
+                }
+                if(resul2 == 200){ 
                     let dia4 = data2.message[0].numRegistros
                     document.getElementById("dia4").innerHTML = dia4 + " personas"   
                     document.getElementById("liga4").href = "reporteDetalleSemana2.html?diaEspecifico=" + data2.message[0].fechaRegistro
@@ -128,8 +156,25 @@
                     let dia8 = data2.message[4].numRegistros
                     document.getElementById("dia8").innerHTML = dia8 + " personas"
                     document.getElementById("liga8").href = "reporteDetalleSemana3.html?diaEspecifico=" + data2.message[4].fechaRegistro 
-
-                }else{
+                }
+                if(resul3 == 200){ 
+                    let dia9 = data3.message[0].numRegistros
+                    document.getElementById("dia9").innerHTML = dia9 + " personas"   
+                    document.getElementById("liga9").href = "reporteDetalleSemana3.html?diaEspecifico=" + data3.message[0].fechaRegistro
+                
+                    let dia10 = data3.message[1].numRegistros
+                    document.getElementById("dia10").innerHTML = dia10 + " personas"   
+                    document.getElementById("liga10").href = "reporteDetalleSemana3.html?diaEspecifico=" + data3.message[1].fechaRegistro
+                
+                    let dia11 = data3.message[2].numRegistros
+                    document.getElementById("dia11").innerHTML = dia11 + " personas"   
+                    document.getElementById("liga11").href = "reporteDetalleSemana3.html?diaEspecifico=" + data3.message[2].fechaRegistro
+                
+                    let dia12 = data3.message[3].numRegistros
+                    document.getElementById("dia12").innerHTML = dia12 + " personas"   
+                    document.getElementById("liga12").href = "reporteDetalleSemana3.html?diaEspecifico=" + data3.message[3].fechaRegistro
+                }
+                if((resul1!=200) && (resul2!=200) && (resul2!=200)){
                     console.log("Error: " + data.message);  
                 }
             } catch (e) {

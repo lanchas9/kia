@@ -53,7 +53,7 @@
         <div id="mensajeError" class="mensajeError"></div>
         <button class="boton" onclick="validaDatos()">Registrarme ahora</button>
     </div>
-<br><br>
+
     <script type="text/javascript">
         let serverLibre = true;
         let tipoValidaciones = { 
@@ -251,7 +251,6 @@
                 
                 let checkbox1 = document.getElementById("checkbox1").checked;
                 let checkbox2 = document.getElementById("checkbox2").checked;
-                let checkbox3 = document.getElementById("checkbox3").checked;
                 
                 
                 let valido = true
@@ -261,10 +260,6 @@
                 //     valido = false
                 //     mensaje = "No se ha marcado la casilla sobre envío de información"
                 // }
-                if (!checkbox3) {
-                    valido = false
-                    mensaje = "Se requiere que sea mayor de edad para el registro"
-                }
 
                 if (!checkbox2) {
                     valido = false
@@ -301,7 +296,7 @@
                 correoConfirmacion = correoConfirmacion.trim()
                 if(correoElectronico !== correoConfirmacion){
                     valido = false
-                    mensaje = "correo electrónico y su confirmación no coinciden"
+                    mensaje = "correo electrónico confirmado no coinciden"
                 }
 
                 
@@ -333,25 +328,10 @@
                 //     valido = false
                 //     mensaje = "Nombre demasiado corto"
                 // }
-                if(valido){
-                    let respuesta = await validaMailYcelular(correoElectronico, telefono) 
-                    if (respuesta.statusCode ==200){
-                        console.log("email y celular es nuevo")        
-                    }else{
-                        valido = false
-                        if(respuesta.message == "correo repetido"){
-                            mensaje = `El correo: ${correoElectronico} ya fué utilizado para registrarse anteriormente`
-                        }else if(respuesta.message == "celular repetido"){
-                            mensaje = `El número de celular: ${telefono} ya fué utilizado para registrarse anteriormente`
-                        }
-                    }        
-                }
                 
                 if(valido){
                     let deseaInfo = checkbox1 == true ? 1:0
                     let aceptoPoliticas = checkbox2 == true ? 1:0
-                    let mayor18 = checkbox3 == true ? 1:0
-                    
                     let resul = await guardaDatos( nombre ,apellido,correoElectronico, telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas)
                     if (resul.statusCode ==200){
                         window.location.href = `resultado.html?nombre=${nombre + ' ' + apellido}&id=${resul.message}`;
@@ -364,51 +344,6 @@
                     serverLibre=true
                 }
             }
-        }
-        //validaMailYcelular
-        async function validaMailYcelular(correoElectronico,telefono){
-            let resul = {
-                error : true,
-                message: "",
-                idUsuario: 0,
-                statusCode: 0
-            }
-            const data = {
-                    "correoElectronico" : correoElectronico,
-                    "telefono" : telefono
-                }
-                const dataJson = JSON.stringify(data)
-
-                const settings = {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                 body: 
-                    dataJson
-                 };
-                try {
-                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/temporada3/validaMailYcelular`, settings);
-                    const data = await fetchResponse.json();
-                    console.log("Data" + JSON.stringify(data))
-                    
-                    if(data.statusCode == 200){
-                        resul.statusCode = data.statusCode
-                        resul.idUsuario = data.message
-                        resul.message = data.message
-                    }else{                        
-                        resul.statusCode = data.statusCode
-                        resul.message = data.message
-                    }
-                    
-                } catch (e) {
-                    console.log("Error" + e)
-                    resul.statusCode = 404
-                    resul.message = e
-                    return resul;
-                }
-                return resul    
         }
         
         async function guardaDatos(nombre ,apellido ,correoElectronico,telefono,codigoPostal ,seleccioneEstado , seleccioneDistribuidor, deseaInfo, aceptoPoliticas){
@@ -441,7 +376,7 @@
                     dataJson
                  };
                 try {
-                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/temporada3/guardaUsuario`, settings);
+                    const fetchResponse = await fetch(`https://mosaico.app:4000/Kia/semana4/guardaUsuario`, settings);
                     const data = await fetchResponse.json();
                     console.log("Data" + JSON.stringify(data))
                     
