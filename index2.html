@@ -22,12 +22,12 @@
             <div class="titulo">Llena esta forma por favor</div>
         </div>
         
-        <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*">
-        <input type="text" class="inputDatos" id="ApellidoPaterno" placeholder="Apellido Paterno*">
-        <input type="text" class="inputDatos" id="correoElectronico" placeholder="Correo Electrónico*">
-        <input type="text" class="inputDatos" id="correoConfirmacion" placeholder="Confirmación de Correo*">
-        <input type="number" class="inputDatos" id="Telefono" placeholder="Teléfono*">
-        <input type="number" class="inputDatos" id="CodigoPostal" placeholder="Código Postal*">
+        <input type="text" class="inputDatos" id="Nombre" placeholder="Nombre*" />
+        <input type="text" class="inputDatos" id="ApellidoPaterno" placeholder="Apellido Paterno*" />
+        <input type="text" class="inputDatos" id="correoElectronico" placeholder="Correo Electrónico*"  data-nb />
+        <input type="text" class="inputDatos" id="correoConfirmacion" placeholder="Confirmación de Correo*" />
+        <input type="number" class="inputDatos" id="Telefono" placeholder="Teléfono*" />
+        <input type="number" class="inputDatos" id="CodigoPostal" placeholder="Código Postal*" />
         <select name="seleccioneEstado" id="SeleccioneEstado" class="inputDatosSelect" onchange="llenaDistribuidor()">
             <option value="" disabled selected>Seleccione Estado*</option>
         </select>
@@ -488,8 +488,156 @@
     </script> 
     <script type="text/javascript">
         _NBSettings = {
-            apiKey: 'public_2734c4300168b73cce2e810a62d2f161'
-        };
+            /**
+             * Message displayed in feedback div when email is acceptable
+             * (See: feedback)
+             */
+            acceptedMessage: "Correo valido",
+
+            /**
+             * The acceptable status codes. Other status codes will be rejected.
+             * Default accepted codes are valid(0), catchall(3) and unknown(4)
+             */
+            acceptedStatusCodes: [0,3,4],
+
+            /**
+             * If this form doesn't use traditional form submission or you need to use
+             * the 'submit' event on the form to do additional processing before
+             * submission use this mode. This will disable traditional submission and let
+             * you hook into two new events to handle form submission (nb:submit) and
+             * rejection (nb:reject) based on the verification.
+             */
+            ajaxMode: false,
+
+            /**
+             * User's public api key; This is available from the apps page.
+             */
+            apiKey: 'public_2734c4300168b73cce2e810a62d2f161',
+
+            /**
+             * When enabled the default event listeners and handling is
+             * disabled. Usage of this option will set the following
+             * options to false:
+             * - autoFieldHookup
+             * - hiddenField
+             * - feedback
+             */
+            apiOnly: false,
+
+            /**
+             * Hook API to fields tagged with `data-nb` or `email` type
+             * This will create event listeners for these inputs and use our
+             * internal handlers for creating the API requests and handing
+             * the results.
+             */
+            autoFieldHookup: true,
+
+            /**
+             * Allows the blocking of freemail email addresses (e.g. Gmail, Hotmail, Yahoo...)
+             */
+            blockFreemail: false,
+
+            /**
+             * Allows the blocking role based emails (e.g. support@, team@, sales@)
+             */
+            blockRoleAccount: false,
+
+            /**
+             * Allows the blocking of throttled verifications from submitting the form.
+             * By default the widget allows the user to submit the form with an
+             * unverified email when throttled.
+             */
+            blockThrottledAttempts: false,
+
+            /**
+             * When enabled the widget won't attempt to load itself unless the
+             * `__nvrbnc_debug` parameter is included in the url
+             */
+            debugMode: false,
+
+            /**
+             * When enabled the feedback displayed to the user (see: feedback)
+             * will display the powered by NeverBounce logo.
+             */
+            displayPoweredBy: true,
+
+            /**
+             * When enabled we display a box indicating the status of the lookup.
+             * This will be displayed on any field our FieldListener has attached
+             * to.
+             */
+            feedback: true,
+
+            /**
+             * This is the class used on the feedback div. This class should use the
+             * `display: none;` property in it's default state. The feedback handler
+             * will set this to `display: block;` when necessary.
+             * (see: feedback)
+             */
+            feedbackClass: "nb-feedback",
+
+            /**
+             * When enabled a hidden field will be added to the form containing
+             * the result's text code.
+             * This will only work for fields attached to the FieldListener.
+             */
+            hiddenField: true,
+
+            /**
+             * This is the time in milliseconds we allow between keystrokes before we
+             * attempt to verify the input.
+             */
+            inputLatency: 600,
+
+            /**
+             * Message displayed in feedback div while waiting for an response
+             * (see: feedback)
+             */
+            loadingMessage: "Cargado...",
+
+            /**
+             * Message displayed in feedback div when email is rejected
+             * (see: feedback)
+             */
+            rejectedMessage: "Correo no válido",
+
+            /**
+             * Custom selector to use for the auto hookup. This can be any valid css
+             * selector or several selectors comma separated.
+             */
+            selector: undefined,
+
+            /**
+             * Message displayed in feedback div when input doesn't pass the local regex check
+             * (see: feedback)
+             */
+            softRejectMessage: "Ingresa Correo válido",
+
+            /**
+             * Message displayed in feedback div when a freemail is entered and `blockFreemail` is enabled
+             */
+            freemailRejectMessage: "Enter a business email",
+
+            /**
+             * Message displayed in feedback div when a role account is entered and `blockRoleAccounts` is enabled
+             */
+            roleAccountRejectMessage: "Role accounts are not permitted <br />&nbsp;<small style=\"margin-left: 20px\">(i.e. sales@..., support@...)</small>",
+
+            /**
+             * Message displayed in feedback div when throttling occurs and
+             * `blockThrottledAttempts` is enabled
+             */
+            throttleRejectMessage: "Too many attempts, try again later",
+
+            /**
+             * Request timeout in seconds
+             * After this threshold is reached the result is assumed unknown. This is likely
+             * a trouble host that will take extra time to resolve.
+             */
+            timeout: 25,
+
+            };
+        
     </script>
     <script type="text/javascript" src="https://cdn.neverbounce.com/widget/dist/NeverBounce.js"></script>
 </body>
