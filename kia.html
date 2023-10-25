@@ -73,7 +73,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: '/lottie/1663-balloons.json' // the path to the animation json
+            path: 'lottie/1663-balloons.json' // the path to the animation json
             });
             
             lottie2 = lottie.loadAnimation({
@@ -81,7 +81,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: '/lottie/92235-confetti.json' // the path to the animation json
+            path: 'lottie/92235-confetti.json' // the path to the animation json
             });
 
             lottie3 = lottie.loadAnimation({
@@ -89,7 +89,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: '/lottie/contador.json' // the path to the animation json
+            path: 'lottie/contador.json' // the path to the animation json
             });
 
             lottie4 = lottie.loadAnimation({
@@ -97,7 +97,7 @@
             renderer: 'svg',
             loop: true,
             autoplay: false,
-            path: '/lottie/91878-bouncy-fail.json' // the path to the animation json
+            path: 'lottie/91878-bouncy-fail.json' // the path to the animation json
             });
 
             //Leer desde Cookie los valores persistentes
@@ -268,10 +268,10 @@
 
         // app.loader.add('boton', '/jpg/boton.webp')
         // Load the bunny texture
-        app.loader.add('arrow', '/jpg/arrow.png')
+        app.loader.add('arrow', 'jpg/arrow.png')
 
         // Load the bunny texture
-        app.loader.add('ruleta', '/jpg/ruleta2.png')
+        app.loader.add('ruleta', 'jpg/ruleta2.png')
         .load(startup);
 
     function startup()
@@ -537,7 +537,7 @@
                     // }
 
                     //--------------
-                    primeraVez = true        
+                    //primeraVez = true        
                     if(primeraVez){
                         document.getElementById("imagen").src = "jpg/2.jpg"
                         document.getElementById("divRuleta").className = "cuerpo element siVisible"
@@ -626,9 +626,8 @@
                     //let segmentoActual =  (segmentoDeJuego/1000) % (duracionSegmento*60)
                     let segmentoActual =Math.floor((segmentoDeJuego) / (duracionSegmento*60))
                     console.log({segmentoActual})
-                    
-                    if(segmentoActual >=///KIA///ID///000026
-                    numPremios ){
+                    ///KIA///ID///000026
+                    if(segmentoActual >= numPremios ){
                         console.log("no hay premio ya nos pasamos segmentoActual > numPremios")
                         return false
                     }else{

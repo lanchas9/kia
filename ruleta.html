@@ -412,10 +412,14 @@
         // let numCarriles = 6
         // let numPremiosXcarril = 6
 
+        //INSTRUCCIONES
+        //   :llenado
+
+
         async function tenemosQR(idInvitado){
             //Aqui verficiamos el segundo que es desde la hora de inciio y validamos en array
             console.log({idInvitado})
-
+            let separador = "///"
             //Vamos a ver si es intruccion de llenado de vending
             if(idInvitado.charAt(0) == ":"){
                 let instruccion = idInvitado.split(":")[1]
