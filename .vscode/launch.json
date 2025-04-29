@@ -17,6 +17,13 @@
             "name": "Reporte",
             "url": "http://localhost:5502/reporte.html",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Ruleta",
+            "url": "http://localhost:5502/kia.html",
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }
